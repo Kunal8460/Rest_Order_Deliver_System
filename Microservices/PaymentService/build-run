@@ -1,0 +1,3 @@
+#!/bin/sh
+mvn clean package && docker build -t bhavin1324/PaymentService .
+docker rm -f PaymentService 2>/dev/null || true && docker run -it --name PaymentService -p 8080:8080 -p 4848:4848 -p 8181:8181 --name PaymentService bhavin1324/PaymentService

@@ -1,0 +1,3 @@
+#!/bin/sh
+mvn clean package && docker build -t bhavin1324/ManagementService .
+docker rm -f ManagementService 2>/dev/null || true && docker run -it --name ManagementService -p 8080:8080 -p 4848:4848 -p 8181:8181 --name ManagementService bhavin1324/ManagementService

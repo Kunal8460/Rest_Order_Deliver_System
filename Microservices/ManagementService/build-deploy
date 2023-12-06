@@ -1,0 +1,21 @@
+#!/bin/sh
+#deploy="false"
+deploy="true"
+
+image=ManagementService
+version=1
+latest=true
+
+#OPTIONS="--no-cache --force-rm"
+#OPTIONS="--no-cache"
+#OPTIONS="--force-rm"
+OPTIONS=""
+
+docker build ${OPTIONS} -t bhavin1324/${image}:1 .
+if [ "$?" -eq 0 ] && [ ${deploy} == "true" ]; then
+    docker push bhavin1324/${image}:1
+    if [ "$latest" == "true" ]; then
+        docker tag bhavin1324/${image}:1 bhavin1324/${image}:latest
+        docker push bhavin1324/${image}:latest
+    fi
+fi
