@@ -195,5 +195,5 @@ public class OrderMaster implements Serializable {
     public String toString() {
         return "entities.OrderMaster[ id=" + id + " ]";
     }
-
+    
 }

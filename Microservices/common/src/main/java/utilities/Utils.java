@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Utils;
+package utilities;
 
+import java.util.Random;
 import java.util.UUID;
 
 /**
@@ -12,10 +13,18 @@ import java.util.UUID;
  */
 public class Utils {
 
-    public static final String DELIVERY_PERSON_ALLOCATED = "Allocated";
-    public static final String DELIVERY_PERSON_NOT_ALLOCATED = "Not Allocated";
-
     public static String getUUID() {
         return UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
     }
+    
+    public static String generateOtp(Integer length) {
+        String numbers = "0123456789";
+        char[] otp = new char[length];
+        Random rand = new Random();
+        for (int i = 0; i < length; i++) {
+            otp[i] = numbers.charAt(rand.nextInt(numbers.length()));
+        }
+        return new String(otp);
+    }
+
 }

@@ -9,7 +9,7 @@ import entities.Items;
 import entities.TaxSlabs;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import Utils.Utils;
+import utilities.Utils;
 import entities.Outlets;
 import entities.Pincodes;
 import java.math.BigInteger;
@@ -23,7 +23,7 @@ import javax.persistence.PersistenceContext;
  * @author HP Laptop
  */
 @Stateless
-public class AdminBean implements AdminBeanLocal {
+public class ManagementBean implements ManagementBeanLocal {
 
     @PersistenceContext(unitName = "orderpu")
     private EntityManager em;
@@ -122,6 +122,17 @@ public class AdminBean implements AdminBeanLocal {
     }
 
     @Override
+    public Items getItemById(String itemId) {
+        try {
+            return (Items) em.createNamedQuery("Items.findById").setParameter("id", itemId).getSingleResult();
+        } catch (Exception ex) {
+            System.out.println("Exception found in getItemById");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
     public boolean addItemCategory(JsonObject data) {
         try {
             String name = data.getString("name");
@@ -188,6 +199,16 @@ public class AdminBean implements AdminBeanLocal {
         }
     }
 
+    @Override
+    public ItemCategory getItemCategoryById(String itemCategoryId) {
+        try {
+            return (ItemCategory) em.createNamedQuery("ItemCategory.findById").setParameter("id", itemCategoryId).getSingleResult();
+        } catch (Exception ex) {
+            System.out.println("Exception found in getItemCategoryById");
+            ex.printStackTrace();
+            return null;
+        }
+    }
 //    @Override
 //    public boolean addDeliveryPerson(JsonObject data) {
 //        try {
@@ -199,6 +220,7 @@ public class AdminBean implements AdminBeanLocal {
 //        }
 //        return true;
 //    }
+
     @Override
     public boolean addOutlet(JsonObject data) {
         try {
@@ -266,11 +288,22 @@ public class AdminBean implements AdminBeanLocal {
 
     @Override
     public Collection<Outlets> getAllOutlets() {
-        try{
+        try {
             Collection<Outlets> outlets = em.createNamedQuery("Outlets.findAll").getResultList();
             return outlets;
-        }catch(Exception ex){
+        } catch (Exception ex) {
             System.out.println("Exception found in GetAllOutlets");
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public Outlets getOutletById(String outletId) {
+        try {
+            return (Outlets) em.createNamedQuery("Outlets.findById").setParameter("id", outletId).getSingleResult();
+        } catch (Exception ex) {
+            System.out.println("Exception found in getOutletById");
             ex.printStackTrace();
             return null;
         }

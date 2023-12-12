@@ -95,7 +95,7 @@
           
     
     <module>PreparationService</module>
-      
+    <module>common</module>
   </modules>
           
 

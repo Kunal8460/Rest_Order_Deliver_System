@@ -193,7 +193,7 @@ public class OrderMaster implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.OrderMaster[ id=" + id + " ]";
+        return "EJB.OrderMaster[ id=" + id + " ]";
     }
 
 }

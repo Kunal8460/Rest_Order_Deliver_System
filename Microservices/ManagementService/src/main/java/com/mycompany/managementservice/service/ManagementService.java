@@ -14,15 +14,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
-import EJB.AdminBeanLocal;
 import entities.ItemCategory;
 import entities.Outlets;
+import EJB.ManagementBeanLocal;
 
 @Path("/management")
 public class ManagementService {
 
     @EJB
-    AdminBeanLocal adminBean;
+    ManagementBeanLocal adminBean;
 
     @POST
     @Path("/addItems")
