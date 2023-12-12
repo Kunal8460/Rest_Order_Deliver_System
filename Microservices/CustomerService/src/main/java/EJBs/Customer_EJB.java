@@ -21,7 +21,7 @@ import javax.persistence.PersistenceContext;
 import org.glassfish.soteria.identitystores.hash.Pbkdf2PasswordHashImpl;
 import utilities.EmailUtil;
 import utilities.GenerateToken;
-
+import utilities.*;
 
 /**
  *
@@ -40,7 +40,7 @@ public class Customer_EJB implements Customer_EJBLocal {
 
         try {
 
-            String userid = UUID.randomUUID().toString();
+            String userid = Utils.getUUID();
             String name = data.getString("name");
             String username = data.getString("username");
             String password = data.getString("password");
@@ -102,7 +102,7 @@ public class Customer_EJB implements Customer_EJBLocal {
     @Override
     public boolean addAddress(JsonObject data) {
         try {
-            String addressId = UUID.randomUUID().toString();
+            String addressId = Utils.getUUID();
             String address = data.getString("address");
             int pincode = Integer.parseInt(data.getString("pincode"));
             Users user = em.find(Users.class, data.getString("user_id"));
@@ -172,7 +172,7 @@ public class Customer_EJB implements Customer_EJBLocal {
         if(pbk.verify(data.getString("password").toCharArray(), user.getPassword())){
          user_details = Json.createObjectBuilder()
                 .add("userid", user.getId())
-                .add("token",GenerateToken.generateJWT(constants.Constants.SHORT_EXP_TOKEN))
+                .add("token",GenerateToken.generateJWT(constants.Constants.ONE_DAY_EXP_TOKEN))
                 .build();  
         }
          return user_details;
@@ -183,6 +183,7 @@ public class Customer_EJB implements Customer_EJBLocal {
         
         
     }
+    @Override
   public JsonObject getUserData(String id) {
         JsonObject user_details = null;
         try{
