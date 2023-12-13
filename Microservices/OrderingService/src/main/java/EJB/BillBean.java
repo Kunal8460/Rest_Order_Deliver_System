@@ -37,6 +37,7 @@ public class BillBean implements BillBeanLocal {
 
     @Override
     public Boolean addOrder(JsonObject data) {
+       
         String jsonItems = data.getJsonArray("items").toString();
         Gson gson = new Gson();
         Type listType = new TypeToken<Collection<OrderLine>>() {
@@ -45,9 +46,9 @@ public class BillBean implements BillBeanLocal {
 
         Double itemTotal = 0d;
         OrderMaster order = new OrderMaster();
-
+        
         String uuid = Utils.getUUID();
-
+        
         order.setId(uuid);
 
         order.setOrderStatus(OrderStatus.PLACED.toString());
@@ -57,6 +58,8 @@ public class BillBean implements BillBeanLocal {
             Double tax = i.getItemId().getPrice() * i.getQuantity() * (i.getItemId().getTaxSlabId().getPercentage() / 100);
             itemTotal += i.getItemId().getPrice() * i.getQuantity();
             itemTotal += tax;
+            i.setOrderId(order);
+            //em.persist(i);
         }
         order.setAmount(itemTotal);
 
@@ -64,16 +67,23 @@ public class BillBean implements BillBeanLocal {
         order.setDeliveryCharge(25d);
         order.setPayableAmount(itemTotal + 25);
         order.setOrderDate(new Date());
-        Users user = (Users) em.createNamedQuery("Users.findById").setParameter("Id", data.getString("userId")).getSingleResult();
+        Users user = (Users)em.createNamedQuery("Users.findById").setParameter("id", data.getString("userId")).getSingleResult();
         order.setUserId(user);
-
-        Outlets outlet = (Outlets) em.createNamedQuery("Outlets.findById").setParameter("Id", data.getString("outletId")).getSingleResult();
+        
+//        DeliveryPerson dp = (DeliveryPerson) em.createNamedQuery("DeliveryPerson.findById").setParameter("Id", data.getString("deliveryPersonId")).getSingleResult();
+//        order.setDeliveryPersonId(dp);
+        
+        Outlets outlet = (Outlets) em.createNamedQuery("Outlets.findById").setParameter("id", data.getString("outletId")).getSingleResult();
         order.setOutletId(outlet);
-
+        
         order.setOrderLineCollection(items);
         em.persist(order);
-
-        return em.contains(order);
+        
+        //Call payment service rest by sending order id 
+//        ms.SendPaymentStatusInquiry(order.getId());
+        
+        return em.contains(order);               
     }
+
 
 }
