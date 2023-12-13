@@ -35,7 +35,7 @@ private static String key;
         return key;
     }
     
-      public static String generateJWT(long exptime) {
+      public static String generateJWT(String role,long exptime) {
         JWTAuth provider = JWTAuth.create(null, new JWTAuthOptions()
                 .addPubSecKey(new PubSecKeyOptions()
                         .setAlgorithm("RS256")
@@ -53,8 +53,8 @@ private static String key;
         token.setIat(System.currentTimeMillis());
         token.setExp(System.currentTimeMillis() + exptime); // 30 Seconds expiration!
 
-        token.setGroups(Arrays.asList(ROLE_CUSTOMER,ROLE_ADMIN,ROLE_RESTAURANT,ROLE_DELIVERY_PERSON));
-
+        token.setGroups(Arrays.asList(role));
+        token.addAdditionalClaims("custom-value", "kamal specific value");
         return provider.generateToken(new JsonObject().mergeIn(token.toJSONString()), new JWTOptions().setAlgorithm("RS256"));
     }
 

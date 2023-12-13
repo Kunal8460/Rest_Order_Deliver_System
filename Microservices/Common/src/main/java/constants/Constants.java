@@ -16,9 +16,9 @@ public static String MAIL_PORT="587";
 public static String TEMPLATES_PATH="classpath:/templates";
 public static long ONE_DAY_EXP_TOKEN=86400000;
 public static long SHORT_EXP_TOKEN=30000;
-public static final String ROLE_CUSTOMER="Customer";
-public static final String ROLE_ADMIN="Admin";
-public static final String ROLE_RESTAURANT="Restaurant";
-public static final String ROLE_DELIVERY_PERSON="DeliveryPerson";
+public static final String ROLE_CUSTOMER="customer";
+public static final String ROLE_ADMIN="admin";
+public static final String ROLE_RESTAURANT="restaurant";
+public static final String ROLE_DELIVERY_PERSON="deliveryPerson";
 
 }

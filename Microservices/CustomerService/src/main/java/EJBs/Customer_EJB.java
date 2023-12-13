@@ -64,7 +64,7 @@ public class Customer_EJB implements Customer_EJBLocal {
             //role detail
             UserRoles role = new UserRoles(username, user_role);
             role.setUsers(newuser);
-            if (checkUserRole(username)) {
+            if (checkUserRole(username)!=null) {
                 em.persist(role);
             } else {
                 return false;
@@ -77,12 +77,12 @@ public class Customer_EJB implements Customer_EJBLocal {
 
     }
 
-    private boolean checkUserRole(String username) {
+    private String checkUserRole(String username) {
         try {
             UserRoles user = (UserRoles) em.createNamedQuery("UserRoles.findByUsername").setParameter("username", username).getSingleResult();
-            return false;
+            return user.getUserRolesPK().getGroupname();
         } catch (Exception ex) {
-            return true;
+            return null;
         }
 
     }
@@ -168,11 +168,12 @@ public class Customer_EJB implements Customer_EJBLocal {
         try{
         String email = data.getString("email");
         Users user = (Users) em.createNamedQuery("Users.findByEmail").setParameter("email", email).getSingleResult();
+            String role = checkUserRole(user.getUsername());
         Pbkdf2PasswordHashImpl pbk = new Pbkdf2PasswordHashImpl();    
         if(pbk.verify(data.getString("password").toCharArray(), user.getPassword())){
          user_details = Json.createObjectBuilder()
                 .add("userid", user.getId())
-                .add("token",GenerateToken.generateJWT(constants.Constants.ONE_DAY_EXP_TOKEN))
+                .add("token",GenerateToken.generateJWT(role,constants.Constants.ONE_DAY_EXP_TOKEN))
                 .build();  
         }
          return user_details;
@@ -261,6 +262,8 @@ public class Customer_EJB implements Customer_EJBLocal {
      em.persist(user);
      return true;
     }
+
+  
 
     
     

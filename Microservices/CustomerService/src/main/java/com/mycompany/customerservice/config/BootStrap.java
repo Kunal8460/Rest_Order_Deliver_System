@@ -8,8 +8,8 @@ import javax.ws.rs.ApplicationPath;
 import org.eclipse.microprofile.auth.LoginConfig;
 
 @SuppressWarnings({"EmptyClass", "SuppressionAnnotation"})
-//@LoginConfig(authMethod = "MP-JWT")
-//@DeclareRoles({ROLE_CUSTOMER,ROLE_ADMIN,ROLE_RESTAURANT,ROLE_DELIVERY_PERSON})
+@LoginConfig(authMethod = "MP-JWT")
+@DeclareRoles({ROLE_CUSTOMER,ROLE_ADMIN,ROLE_RESTAURANT,ROLE_DELIVERY_PERSON})
 @ApplicationPath("rest")
 public class BootStrap extends javax.ws.rs.core.Application {
 }

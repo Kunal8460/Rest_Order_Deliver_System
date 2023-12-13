@@ -6,6 +6,8 @@ package REST;
 
 import EJBs.Customer_EJBLocal;
 import Entity.Users;
+import static constants.Constants.ROLE_CUSTOMER;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -60,6 +62,7 @@ public class CustomerREST {
        
     }
     @DELETE
+    @RolesAllowed(ROLE_CUSTOMER)
     @Path("/removeAddress/{id}")
     @Consumes(MediaType.TEXT_PLAIN)
     public Response removeAddress(@PathParam("id") String id){
@@ -73,6 +76,7 @@ public class CustomerREST {
 
    
     @POST
+    @RolesAllowed(ROLE_CUSTOMER)
     @Path("/addAddress")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addAddress(@RequestBody JsonObject data){
@@ -85,6 +89,7 @@ public class CustomerREST {
     }
     
     @POST
+    @RolesAllowed(ROLE_CUSTOMER)
     @Path("/updateAddress")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateAddress(@RequestBody JsonObject data){
@@ -105,6 +110,7 @@ public class CustomerREST {
     }
     
     @POST
+     @RolesAllowed(ROLE_CUSTOMER)
     @Path("/sendOTP/{email}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -114,6 +120,7 @@ public class CustomerREST {
     
     @GET
     @Path("/user/{id}")
+    @RolesAllowed(ROLE_CUSTOMER)
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public JsonObject getUserData(@PathParam("id")String id){
@@ -121,6 +128,7 @@ public class CustomerREST {
     }
     
     @POST
+     @RolesAllowed(ROLE_CUSTOMER)
     @Path("/updateProfile")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response updateProfile(@RequestBody JsonObject data){
@@ -133,6 +141,7 @@ public class CustomerREST {
     }
     
     @GET
+     @RolesAllowed(ROLE_CUSTOMER)
     @Path("/getCredits/{id}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
@@ -141,6 +150,7 @@ public class CustomerREST {
     }
     
     @POST
+     @RolesAllowed(ROLE_CUSTOMER)
     @Path("/updateCredits")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -149,6 +159,7 @@ public class CustomerREST {
     }
     
     @POST
+     @RolesAllowed(ROLE_CUSTOMER)
     @Path("/changePassword")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
