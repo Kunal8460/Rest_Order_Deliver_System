@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author HP Laptop
+ * @author Bhatt Jaimin
  */
 @Entity
 @Table(name = "users")
@@ -32,7 +32,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Users.findById", query = "SELECT u FROM Users u WHERE u.id = :id"),
     @NamedQuery(name = "Users.findByName", query = "SELECT u FROM Users u WHERE u.name = :name"),
     @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username"),
-    @NamedQuery(name = "Users.findByPhoneNo", query = "SELECT u FROM Users u WHERE u.phoneNo = :phoneNo")})
+    @NamedQuery(name = "Users.findByPhoneNo", query = "SELECT u FROM Users u WHERE u.phoneNo = :phoneNo"),
+     @NamedQuery(name = "Users.findByEmail", query = "SELECT u FROM Users u WHERE u.email = :email"),
+    @NamedQuery(name = "Users.findByCredits", query = "SELECT u FROM Users u WHERE u.credits = :credits")})
 public class Users implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,15 +64,23 @@ public class Users implements Serializable {
     @Lob
     @Column(name = "profile_photo")
     private byte[] profilePhoto;
+    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    @Column(name = "credits")
+    private Double credits;
     @OneToMany(mappedBy = "userId")
+    @JsonbTransient
     private Collection<AddressMaster> addressMasterCollection;
     @OneToMany(mappedBy = "userId")
+    @JsonbTransient
     private Collection<OrderMaster> orderMasterCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    @JsonbTransient
     private Collection<UserRoles> userRolesCollection;
     @OneToMany(mappedBy = "userId")
+    @JsonbTransient
     private Collection<Ratings> ratingsCollection;
     @OneToMany(mappedBy = "username")
+    @JsonbTransient
     private Collection<DeliveryPerson> deliveryPersonCollection;
 
     public Users() {
@@ -136,7 +146,14 @@ public class Users implements Serializable {
         this.profilePhoto = profilePhoto;
     }
 
-    @JsonbTransient
+    public Double getCredits() {
+        return credits;
+    }
+
+    public void setCredits(Double credits) {
+        this.credits = credits;
+    }
+
     public Collection<AddressMaster> getAddressMasterCollection() {
         return addressMasterCollection;
     }
@@ -145,7 +162,6 @@ public class Users implements Serializable {
         this.addressMasterCollection = addressMasterCollection;
     }
 
-    @JsonbTransient
     public Collection<OrderMaster> getOrderMasterCollection() {
         return orderMasterCollection;
     }
@@ -154,7 +170,6 @@ public class Users implements Serializable {
         this.orderMasterCollection = orderMasterCollection;
     }
 
-    @JsonbTransient
     public Collection<UserRoles> getUserRolesCollection() {
         return userRolesCollection;
     }
@@ -163,7 +178,6 @@ public class Users implements Serializable {
         this.userRolesCollection = userRolesCollection;
     }
 
-    @JsonbTransient
     public Collection<Ratings> getRatingsCollection() {
         return ratingsCollection;
     }
@@ -172,7 +186,6 @@ public class Users implements Serializable {
         this.ratingsCollection = ratingsCollection;
     }
 
-    @JsonbTransient
     public Collection<DeliveryPerson> getDeliveryPersonCollection() {
         return deliveryPersonCollection;
     }
@@ -203,7 +216,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.Users[ id=" + id + " ]";
+        return "Entities.Users[ id=" + id + " ]";
     }
-
+    
 }

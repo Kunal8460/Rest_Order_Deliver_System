@@ -17,6 +17,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
 import entities.ItemCategory;
 import entities.Outlets;
 import EJB.ManagementBeanLocal;
+import entities.DeliveryPerson;
 
 @Path("/management")
 public class ManagementService {
@@ -152,4 +153,52 @@ public class ManagementService {
         return adminBean.getAllOutlets();
     }
 
+    @POST
+    @Path("/addDeliveryPerson")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response addDeliveryPerson(@RequestBody JsonObject data){
+        if(adminBean.addDeliveryPerson(data)){
+            return Response.status(200,"DeliveryPerson Added successfully").build();
+        }else{
+            return Response.status(405,"DeliveryPerson Adding Failed").build();
+            
+        }
+    }
+    
+    @DELETE
+    @Path("/deleteDeliveryPerson/{id}")
+    public Response deleteDeliveryPerson(@PathParam("id") String id) {
+
+        if (adminBean.deleteDeliveryPerson(id)) {
+            return Response.status(200, "DeliveryPerson Deleted Successfully").build();
+        } else {
+            return Response.status(405, "DeliveryPerson Deleting  Failed").build();
+        }
+    }
+    
+    @POST
+    @Path("/editDeliveryPerson/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response editDeliveryPerson(@PathParam("id") String id, @RequestBody JsonObject data) {
+
+        if (adminBean.editDeliveryPerson(id, data)) {
+            return Response.status(200, "DeliveryPerson Edited Successfully").build();
+        } else {
+            return Response.status(405, "Failed to edit DeliveryPerson").build();
+        }
+    }
+    
+    @GET
+    @Path("/getAllDeliveryPerson")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<DeliveryPerson> getAllDeliveryPerson() {
+        return adminBean.getAllDeliveryPerson();
+    }
+    
+    @GET
+    @Path("/getDeliveryPersonById/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public DeliveryPerson getDeliveryPersonById(@PathParam("id") String id){
+        return adminBean.getDeliveryPersonById(id);
+    }
 }

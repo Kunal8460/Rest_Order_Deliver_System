@@ -4,6 +4,8 @@
  */
 package EJB;
 
+import client.IClientCustomer;
+import entities.DeliveryPerson;
 import entities.ItemCategory;
 import entities.Items;
 import entities.TaxSlabs;
@@ -12,11 +14,15 @@ import javax.persistence.EntityManager;
 import utilities.Utils;
 import entities.Outlets;
 import entities.Pincodes;
+import entities.UserRoles;
+import entities.Users;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
+import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.persistence.PersistenceContext;
+import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 /**
  *
@@ -27,6 +33,10 @@ public class ManagementBean implements ManagementBeanLocal {
 
     @PersistenceContext(unitName = "orderpu")
     private EntityManager em;
+
+    @Inject
+    @RestClient
+    IClientCustomer cli;
 
     @Override
     public boolean addItems(JsonObject data) {
@@ -209,17 +219,6 @@ public class ManagementBean implements ManagementBeanLocal {
             return null;
         }
     }
-//    @Override
-//    public boolean addDeliveryPerson(JsonObject data) {
-//        try {
-//
-//        } catch (Exception ex) {
-//            System.out.println("Exception in Adding delivering person");
-//            ex.printStackTrace();
-//            return false;
-//        }
-//        return true;
-//    }
 
     @Override
     public boolean addOutlet(JsonObject data) {
@@ -307,6 +306,81 @@ public class ManagementBean implements ManagementBeanLocal {
             ex.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public boolean addDeliveryPerson(JsonObject data) {
+        try {
+            cli.register(data);
+            DeliveryPerson dp = new DeliveryPerson();
+            dp.setId(Utils.getUUID());
+            String username = data.getString("username");
+            Users user = (Users) em.createNamedQuery("Users.findByUsername").setParameter("username", username).getSingleResult();
+            dp.setUsername(user);
+            dp.setAdhaarNumber(new BigInteger(data.getString("aadharNumber")));
+            Outlets outlet = em.find(Outlets.class, data.getString("outletId"));
+            dp.setOutletId(outlet);
+            em.persist(dp);
+            return true;
+
+        } catch (Exception ex) {
+            System.out.println("Exception found in AddDeliveryPerson ");
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean deleteDeliveryPerson(String id) {
+        try {
+            DeliveryPerson dp = em.find(DeliveryPerson.class, id);
+            UserRoles role = (UserRoles) em.createNamedQuery("UserRoles.findByUsername").setParameter("username", dp.getUsername().getUsername()).getSingleResult();
+            em.remove(role);
+            em.remove(dp.getUsername());
+            em.remove(dp);
+
+            return true;
+        } catch (Exception ex) {
+            System.out.println("Exception found in deleting deliveryperson");
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public boolean editDeliveryPerson(String id, JsonObject data) {
+       try {
+//            cli.register(data);
+            DeliveryPerson dp = em.find(DeliveryPerson.class,id);
+            String username = data.getString("username");
+            
+            Users user = (Users) em.createNamedQuery("Users.findByUsername").setParameter("username", username).getSingleResult();
+            user.setName(data.getString("name"));
+            user.setPhoneNo(new BigInteger(data.getString("phone_no")));
+            em.merge(user);
+            
+            dp.setUsername(user);
+            dp.setAdhaarNumber(new BigInteger(data.getString("aadharNumber")));
+            Outlets outlet = em.find(Outlets.class, data.getString("outletId"));
+            dp.setOutletId(outlet);
+            em.merge(dp);
+            return true;
+
+        } catch (Exception ex) {
+            System.out.println("Exception found in AddDeliveryPerson ");
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
+    @Override
+    public Collection<DeliveryPerson> getAllDeliveryPerson() {
+        return em.createNamedQuery("DeliveryPerson.findAll").getResultList();
+    }
+
+    @Override
+    public DeliveryPerson getDeliveryPersonById(String deliveryPersonId) {
+        return em.find(DeliveryPerson.class, deliveryPersonId);
     }
 
 }

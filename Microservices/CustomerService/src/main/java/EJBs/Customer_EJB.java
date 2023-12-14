@@ -64,7 +64,7 @@ public class Customer_EJB implements Customer_EJBLocal {
             //role detail
             UserRoles role = new UserRoles(username, user_role);
             role.setUsers(newuser);
-            if (checkUserRole(username)!=null) {
+            if (em.contains(newuser)) {
                 em.persist(role);
             } else {
                 return false;

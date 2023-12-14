@@ -4,6 +4,7 @@
  */
 package EJB;
 
+import entities.DeliveryPerson;
 import entities.ItemCategory;
 import entities.Items;
 import entities.Outlets;
@@ -38,15 +39,15 @@ public interface ManagementBeanLocal {
 
     public Collection<ItemCategory> getAllItemCategory();
 
-//    public boolean addDeliveryPerson(JsonObject data);
+    public boolean addDeliveryPerson(JsonObject data);
 
-//    public boolean deleteDeliveryPerson(String id);
-//
-//    public boolean editDeliveryPerson(String id,JsonObject data);
-//
-//    public Collection<DeliveryPerson> getAllDeliveryPerson();
-//    
-//    public DeliveryPerson getDeliveryPersonById(String deliveryPersonId);
+    public boolean deleteDeliveryPerson(String id);
+
+    public boolean editDeliveryPerson(String id,JsonObject data);
+
+    public Collection<DeliveryPerson> getAllDeliveryPerson();
+    
+    public DeliveryPerson getDeliveryPersonById(String deliveryPersonId);
     
     public boolean addOutlet(JsonObject data);
 
