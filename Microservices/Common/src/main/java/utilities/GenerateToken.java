@@ -54,7 +54,6 @@ private static String key;
         token.setExp(System.currentTimeMillis() + exptime); // 30 Seconds expiration!
 
         token.setGroups(Arrays.asList(role));
-        token.addAdditionalClaims("custom-value", "kamal specific value");
         return provider.generateToken(new JsonObject().mergeIn(token.toJSONString()), new JWTOptions().setAlgorithm("RS256"));
     }
 

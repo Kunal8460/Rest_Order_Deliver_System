@@ -4,6 +4,7 @@
  */
 package EJBs;
 
+import Entity.AddressMaster;
 import Entity.Users;
 import javax.ejb.Local;
 import javax.json.JsonObject;
@@ -12,17 +13,18 @@ import javax.json.JsonObject;
  *
  * @author Bhatt Jaimin
  */
+import utilities.PHResponseType;
 @Local
 public interface Customer_EJBLocal {
-    public boolean register(JsonObject data);
-    public boolean removeAddress(String addressid);
-    public boolean addAddress(JsonObject data);
-    public boolean updateAddress(JsonObject data);
-    public boolean updateProfile(JsonObject data);
+    public PHResponseType register(JsonObject data);
+    public PHResponseType removeAddress(String addressid);
+    public PHResponseType addAddress(JsonObject data);
+    public PHResponseType updateAddress(JsonObject data);
+    public PHResponseType updateProfile(JsonObject data);
     public JsonObject login(JsonObject data);
     public JsonObject getUserData(String id);
     public int sendOTP(String email);
     public double getUserCredits(String userid);
-    public boolean updateCredits(JsonObject data);
-    public boolean changePassword(JsonObject data);
+    public PHResponseType updateCredits(JsonObject data);
+    public PHResponseType changePassword(JsonObject data);
 }
