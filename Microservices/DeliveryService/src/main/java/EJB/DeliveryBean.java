@@ -8,6 +8,7 @@ import entities.DeliveryPerson;
 import entities.OrderMaster;
 import entities.Outlets;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -82,4 +83,13 @@ public class DeliveryBean implements DeliveryBeanLocal {
         }
         return true;
     }
+
+    @Override
+    public Collection<OrderMaster> getAllocatedOrders(String deliveryPersonId) {
+        Collection<OrderMaster> allocatedOrders = em.createQuery("select o from OrderMaster o where o.deliveryPersonId.id = :id").setParameter("id", deliveryPersonId).getResultList();
+        return allocatedOrders;
+        
+    }
+    
+    
 }

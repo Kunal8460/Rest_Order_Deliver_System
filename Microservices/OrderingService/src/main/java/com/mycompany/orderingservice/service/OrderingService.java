@@ -17,6 +17,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import utilities.PHResponseType;
 
 @Path("/ordering")
 public class OrderingService {
@@ -67,8 +68,9 @@ public class OrderingService {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/addOrder")
     public Response addOrder(@RequestBody JsonObject json) {
-        if (bb.addOrder(json)) {
-            return Response.status(200, "Order Created Successfully").build();
+        PHResponseType phr = bb.addOrder(json);
+        if (phr!=null) {
+            return Response.status(200).entity(phr).build();
         } else {
             return Response.status(405, "Failed to Create Order").build();
         }

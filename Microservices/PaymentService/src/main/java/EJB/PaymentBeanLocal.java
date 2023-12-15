@@ -4,9 +4,10 @@
  */
 package EJB;
 
+import entities.OrderLine;
 import entities.OrderMaster;
+import java.util.Collection;
 import javax.ejb.Local;
-import javax.json.JsonObject;
 import utilities.PHResponseType;
 
 /**
@@ -17,5 +18,5 @@ import utilities.PHResponseType;
 public interface PaymentBeanLocal {
     OrderMaster getOrderById(String id);
     public Boolean updateOrderStatus(OrderMaster order, String status);
-    public PHResponseType checkCreditsAndPlaceOrder(JsonObject data);
+    public PHResponseType doPaymentAndPlaceOrder(OrderMaster order);
 }

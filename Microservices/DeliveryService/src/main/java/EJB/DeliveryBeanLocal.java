@@ -4,8 +4,9 @@
  */
 package EJB;
 
+import entities.OrderMaster;
+import java.util.Collection;
 import javax.ejb.Local;
-import org.json.JSONObject;
 
 /**
  *
@@ -17,5 +18,7 @@ public interface DeliveryBeanLocal {
     public String deliveryPersonAllocation(String orderId,String outletid);
     
     public boolean updateDeliveryStatusToDelivered(String orderId);
+    
+    public Collection<OrderMaster> getAllocatedOrders(String deliveryPersonId);
         
 }

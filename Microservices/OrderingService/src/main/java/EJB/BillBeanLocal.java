@@ -6,6 +6,7 @@ package EJB;
 
 import javax.ejb.Local;
 import javax.json.JsonObject;
+import utilities.PHResponseType;
 
 /**
  *
@@ -13,5 +14,5 @@ import javax.json.JsonObject;
  */
 @Local
 public interface BillBeanLocal {
-    Boolean addOrder(JsonObject data);
+    PHResponseType addOrder(JsonObject data);
 }

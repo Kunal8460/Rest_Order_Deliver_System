@@ -5,11 +5,11 @@
 package EJB;
 
 import client.IClientOrder;
+import entities.OrderLine;
 import entities.OrderMaster;
-import entities.Users;
+import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
@@ -24,26 +24,33 @@ public class PaymentBean implements PaymentBeanLocal {
 
     @PersistenceContext(unitName = "orderpu")
     EntityManager em;
-    
-    @Inject @RestClient IClientOrder cli;
+
+    @Inject
+    @RestClient
+    IClientOrder cli;
 
     @Override
-    public PHResponseType checkCreditsAndPlaceOrder(JsonObject data) {
+    public PHResponseType doPaymentAndPlaceOrder(OrderMaster order) {
         PHResponseType phr = new PHResponseType();
         try {
-            String userId = data.getString("userId");
-            Users user = em.find(Users.class, userId);
-            if (user.getCredits() < 1000) {
-                cli.addOrder(data);
-                phr.setMessage("OrderService/addOrder Rest called");
-                phr.setStatus(200);
+            if (order.getPaymentMethod().equals("CREDIT")) {
+
+                if (order.getUserId().getCredits() < order.getPayableAmount()) {
+                    phr.setStatus(405);
+                    phr.setMessage("User Credits are less than the Payable amount");
+                    return phr;
+                } else {
+                    phr.setStatus(200);
+                    phr.setMessage("Payment Successfull");
+                }
+                return phr;
             } else {
-                phr.setMessage("OrderService/addOrder Rest called");
-                phr.setStatus(405);
+                phr.setStatus(200);
+                phr.setMessage("Payment Successfull");
+                return phr;
             }
-            return phr;
         } catch (Exception ex) {
-            phr.setMessage("OrderService/addOrder Rest called");
+            phr.setMessage("Payment Failed.");
             phr.setStatus(405);
             return phr;
         }

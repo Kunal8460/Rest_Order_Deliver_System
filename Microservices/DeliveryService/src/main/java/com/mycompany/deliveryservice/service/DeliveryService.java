@@ -1,6 +1,8 @@
 package com.mycompany.deliveryservice.service;
 
 import EJB.DeliveryBeanLocal;
+import entities.OrderMaster;
+import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -37,5 +39,12 @@ public class DeliveryService {
         } else {
             return Response.status(405, "Delivery status update Falied !!").build();
         }
+    }
+
+    @GET
+    @Path("/getAllocatedOrders/{deliverPersonId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<OrderMaster> getAllocatedOrders(@PathParam("deliverPersonId") String deliverPersonId) {
+        return dlb.getAllocatedOrders(deliverPersonId);
     }
 }
