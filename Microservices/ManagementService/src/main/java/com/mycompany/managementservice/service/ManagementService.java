@@ -18,6 +18,7 @@ import entities.ItemCategory;
 import entities.Outlets;
 import EJB.ManagementBeanLocal;
 import entities.DeliveryPerson;
+import utilities.PHResponseType;
 
 @Path("/management")
 public class ManagementService {
@@ -28,36 +29,38 @@ public class ManagementService {
     @POST
     @Path("/addItems")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addItems(@RequestBody JsonObject data) {
-        boolean status = adminBean.addItems(data);
-
-        if (status) {
-            return Response.status(200, "Item Added Successfully").build();
+        PHResponseType phr = adminBean.addItems(data);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Item Adding Failed").build();
+            return Response.status(405, "Item Adding failed!!").build();
         }
     }
 
     @DELETE
     @Path("/deleteItem/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response deleteItem(@PathParam("id") String id) {
-
-        if (adminBean.deleteItems(id)) {
-            return Response.status(200, "Item Deleted Successfully").build();
+        PHResponseType phr = adminBean.deleteItems(id);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Item Deleting  Failed").build();
+            return Response.status(405, "User Registration failed!!").build();
         }
     }
 
     @POST
     @Path("/editItem/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response editItem(@PathParam("id") String id, @RequestBody JsonObject data) {
-
-        if (adminBean.editItem(id, data)) {
-            return Response.status(200, "Item Edited Successfully").build();
+        PHResponseType phr = adminBean.editItem(id, data);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Failed to edit items").build();
+            return Response.status(405, "User Registration failed!!").build();
         }
     }
 
@@ -68,39 +71,47 @@ public class ManagementService {
         return adminBean.getAllItems();
     }
 
+    @GET
+    @Path("/getItemById/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Items getItemById(@PathParam("id") String id) {
+        return adminBean.getItemById(id);
+    }
+
     @POST
     @Path("/addItemCategory")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addItemCategory(@RequestBody JsonObject data) {
-        boolean status = adminBean.addItemCategory(data);
-
-        if (status) {
-            return Response.status(200, "Item Category Added Successfully").build();
+        PHResponseType phr = adminBean.addItemCategory(data);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Item Category Adding Failed").build();
+            return Response.status(405, "Item Category Adding failed!!").build();
         }
     }
 
     @DELETE
     @Path("/deleteItemCategory/{id}")
     public Response deleteItemCategory(@PathParam("id") String id) {
-
-        if (adminBean.deleteItemCategory(id)) {
-            return Response.status(200, "Item Category Deleted Successfully").build();
+        PHResponseType phr = adminBean.deleteItemCategory(id);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Item Category Deleting  Failed").build();
+            return Response.status(405, "User Registration failed!!").build();
         }
     }
 
     @POST
     @Path("/editItemCategory/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response editItemCategory(@PathParam("id") String id, @RequestBody JsonObject data) {
-
-        if (adminBean.editItemCategory(id, data)) {
-            return Response.status(200, "Item Category Edited Successfully").build();
+        PHResponseType phr = adminBean.editItemCategory(id, data);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Failed to edit item category").build();
+            return Response.status(405, "User Registration failed!!").build();
         }
     }
 
@@ -111,38 +122,47 @@ public class ManagementService {
         return adminBean.getAllItemCategory();
     }
 
+    @GET
+    @Path("/getItemCategoryById/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ItemCategory getItemCategoryById(@PathParam("id") String id) {
+        return adminBean.getItemCategoryById(id);
+    }
+
     @POST
     @Path("/addOutlet")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response addOutlet(@RequestBody JsonObject data) {
-        boolean status = adminBean.addOutlet(data);
-        if (status) {
-            return Response.status(200, "Outlet Added Successfully").build();
+        PHResponseType phr = adminBean.addOutlet(data);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Outlet Adding Failed").build();
+            return Response.status(405, "Outlet Adding failed!!").build();
         }
     }
 
     @DELETE
     @Path("/deleteOutlet/{id}")
     public Response deleteOutlet(@PathParam("id") String id) {
-
-        if (adminBean.deleteOutlet(id)) {
-            return Response.status(200, "Outlet Deleted Successfully").build();
+        PHResponseType phr = adminBean.deleteOutlet(id);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Outlet Deleting  Failed").build();
+            return Response.status(405, "User Registration failed!!").build();
         }
     }
 
     @POST
     @Path("/editOutlet/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response editOutlet(@PathParam("id") String id, @RequestBody JsonObject data) {
-
-        if (adminBean.editOutlet(id, data)) {
-            return Response.status(200, "Outlet Edited Successfully").build();
+        PHResponseType phr = adminBean.editOutlet(id, data);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Failed to edit Outlet").build();
+            return Response.status(405, "User Registration failed!!").build();
         }
     }
 
@@ -153,52 +173,61 @@ public class ManagementService {
         return adminBean.getAllOutlets();
     }
 
+    @GET
+    @Path("/getOutletById/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Outlets getOutletById(@PathParam("id") String id) {
+        return adminBean.getOutletById(id);
+    }
+
     @POST
     @Path("/addDeliveryPerson")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response addDeliveryPerson(@RequestBody JsonObject data){
-        if(adminBean.addDeliveryPerson(data)){
-            return Response.status(200,"DeliveryPerson Added successfully").build();
-        }else{
-            return Response.status(405,"DeliveryPerson Adding Failed").build();
-            
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addDeliveryPerson(@RequestBody JsonObject data) {
+        PHResponseType phr = adminBean.addDeliveryPerson(data);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
+        } else {
+            return Response.status(405, "User Registration failed!!").build();
         }
     }
-    
+
     @DELETE
     @Path("/deleteDeliveryPerson/{id}")
     public Response deleteDeliveryPerson(@PathParam("id") String id) {
-
-        if (adminBean.deleteDeliveryPerson(id)) {
-            return Response.status(200, "DeliveryPerson Deleted Successfully").build();
+        PHResponseType phr = adminBean.deleteDeliveryPerson(id);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "DeliveryPerson Deleting  Failed").build();
+            return Response.status(405, "User Registration failed!!").build();
         }
     }
-    
+
     @POST
     @Path("/editDeliveryPerson/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response editDeliveryPerson(@PathParam("id") String id, @RequestBody JsonObject data) {
-
-        if (adminBean.editDeliveryPerson(id, data)) {
-            return Response.status(200, "DeliveryPerson Edited Successfully").build();
+        PHResponseType phr = adminBean.editDeliveryPerson(id, data);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Failed to edit DeliveryPerson").build();
+            return Response.status(405, "User Registration failed!!").build();
         }
     }
-    
+
     @GET
     @Path("/getAllDeliveryPerson")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<DeliveryPerson> getAllDeliveryPerson() {
         return adminBean.getAllDeliveryPerson();
     }
-    
+
     @GET
     @Path("/getDeliveryPersonById/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public DeliveryPerson getDeliveryPersonById(@PathParam("id") String id){
+    public DeliveryPerson getDeliveryPersonById(@PathParam("id") String id) {
         return adminBean.getDeliveryPersonById(id);
     }
 }

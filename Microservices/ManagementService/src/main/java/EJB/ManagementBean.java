@@ -23,6 +23,7 @@ import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.persistence.PersistenceContext;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import utilities.PHResponseType;
 
 /**
  *
@@ -39,9 +40,9 @@ public class ManagementBean implements ManagementBeanLocal {
     IClientCustomer cli;
 
     @Override
-    public boolean addItems(JsonObject data) {
+    public PHResponseType addItems(JsonObject data) {
+        PHResponseType phr = new PHResponseType();
         try {
-
             String itemname = data.getString("name");
             String categoryId = data.getString("categoryId");
             String description = data.getString("description");
@@ -63,33 +64,38 @@ public class ManagementBean implements ManagementBeanLocal {
 //            newItem.setItemImage(itemImage);
             newItem.setIsVeg(isVeg);
 
+            phr.setStatus(200);
+            phr.setMessage("Item Added successfully");
             em.persist(newItem);
         } catch (Exception ex) {
             System.out.println("Exception found in AddItems ====> ");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
-        return true;
+        return phr;
     }
 
     @Override
-    public boolean deleteItems(String itemId) {
+    public PHResponseType deleteItems(String itemId) {
+        PHResponseType phr = new PHResponseType();
         try {
             Items item = em.find(Items.class, itemId);
             if (item != null) {
                 em.remove(item);
+                phr.setStatus(200);
+                phr.setMessage("Item Deleted successfully");
             }
         } catch (Exception ex) {
             System.out.println("Exception  found in DeleteItems ====> ");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
-        return true;
+        return phr;
     }
 
     @Override
-    public boolean editItem(String id, JsonObject data) {
-
+    public PHResponseType editItem(String id, JsonObject data) {
+        PHResponseType phr = new PHResponseType();
         try {
             String itemname = data.getString("name");
             String categoryId = data.getString("categoryId");
@@ -109,12 +115,15 @@ public class ManagementBean implements ManagementBeanLocal {
             item.setPrice(price);
 //            newItem.setItemImage(itemImage);
             item.setIsVeg(isVeg);
+
+            phr.setStatus(200);
+            phr.setMessage("Item Updated successfully");
             em.merge(item);
-            return true;
+            return phr;
         } catch (Exception ex) {
             System.out.println("Exception occured in EditItem =======>");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
     }
 
@@ -143,7 +152,8 @@ public class ManagementBean implements ManagementBeanLocal {
     }
 
     @Override
-    public boolean addItemCategory(JsonObject data) {
+    public PHResponseType addItemCategory(JsonObject data) {
+        PHResponseType phr = new PHResponseType();
         try {
             String name = data.getString("name");
             Boolean isSizeVarient = Boolean.valueOf(data.getString("isSizeVarient"));
@@ -155,31 +165,38 @@ public class ManagementBean implements ManagementBeanLocal {
 
             em.persist(itemCategory);
 
+            phr.setMessage("Item Category Added Successfully");
+            phr.setStatus(200);
+
         } catch (Exception ex) {
             System.out.println("Exception found in Add Item Category");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
-        return true;
+        return phr;
     }
 
     @Override
-    public boolean deleteItemCategory(String id) {
+    public PHResponseType deleteItemCategory(String id) {
+        PHResponseType phr = new PHResponseType();
         try {
             ItemCategory itemCategory = em.find(ItemCategory.class, id);
             if (itemCategory != null) {
                 em.remove(itemCategory);
+                phr.setMessage("Item Category Deleted Successfully");
+                phr.setStatus(200);
             }
         } catch (Exception ex) {
             System.out.println("Exception  found in DeleteItemCategory ====> ");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
-        return true;
+        return phr;
     }
 
     @Override
-    public boolean editItemCategory(String id, JsonObject data) {
+    public PHResponseType editItemCategory(String id, JsonObject data) {
+        PHResponseType phr = new PHResponseType();
         try {
             String name = data.getString("name");
             Boolean isSizeVarient = Boolean.valueOf(data.getString("isSizeVarient"));
@@ -190,12 +207,14 @@ public class ManagementBean implements ManagementBeanLocal {
 
             em.merge(itemCategory);
 
+            phr.setMessage("Item Category Edited Successfully");
+            phr.setStatus(200);
         } catch (Exception ex) {
             System.out.println("Exception found in Delete Item Category");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
-        return true;
+        return phr;
     }
 
     @Override
@@ -221,7 +240,8 @@ public class ManagementBean implements ManagementBeanLocal {
     }
 
     @Override
-    public boolean addOutlet(JsonObject data) {
+    public PHResponseType addOutlet(JsonObject data) {
+        PHResponseType phr = new PHResponseType();
         try {
             String name = data.getString("name");
             String address = data.getString("address");
@@ -242,29 +262,37 @@ public class ManagementBean implements ManagementBeanLocal {
 
             em.persist(outlets);
 
+            phr.setMessage("Outlet Added Successfully");
+            phr.setStatus(200);
         } catch (Exception ex) {
             System.out.println("Exception adding outlets");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
-        return true;
+        return phr;
     }
 
     @Override
-    public boolean deleteOutlet(String id) {
+    public PHResponseType deleteOutlet(String id) {
+        PHResponseType phr = new PHResponseType();
         try {
             Outlets outlet = em.find(Outlets.class, id);
-            em.remove(outlet);
+            if (outlet != null) {
+                em.remove(outlet);
+                phr.setMessage("Outlet Deleted Successfully");
+                phr.setStatus(200);
+            }
         } catch (Exception ex) {
             System.out.println("Exception found in Deleting outlet");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
-        return true;
+        return phr;
     }
 
     @Override
-    public boolean editOutlet(String id, JsonObject data) {
+    public PHResponseType editOutlet(String id, JsonObject data) {
+        PHResponseType phr = new PHResponseType();
         try {
             Outlets outlet = em.find(Outlets.class, id);
             outlet.setName(data.getString("name"));
@@ -277,12 +305,14 @@ public class ManagementBean implements ManagementBeanLocal {
             outlet.setPincode(pc);
 
             em.merge(outlet);
+            phr.setMessage("Outlet Edited Successfully");
+            phr.setStatus(200);
         } catch (Exception ex) {
             System.out.println("Exception found in Editing outlet");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
-        return true;
+        return phr;
     }
 
     @Override
@@ -309,7 +339,8 @@ public class ManagementBean implements ManagementBeanLocal {
     }
 
     @Override
-    public boolean addDeliveryPerson(JsonObject data) {
+    public PHResponseType addDeliveryPerson(JsonObject data) {
+        PHResponseType phr = new PHResponseType();
         try {
             cli.register(data);
             DeliveryPerson dp = new DeliveryPerson();
@@ -321,55 +352,68 @@ public class ManagementBean implements ManagementBeanLocal {
             Outlets outlet = em.find(Outlets.class, data.getString("outletId"));
             dp.setOutletId(outlet);
             em.persist(dp);
-            return true;
+
+            phr.setStatus(200);
+            phr.setMessage("Delivery Person added Successfully");
+            return phr;
 
         } catch (Exception ex) {
             System.out.println("Exception found in AddDeliveryPerson ");
-            ex.printStackTrace();
-            return false;
+            //            ex.printStackTrace();
+//            phr.setStatus(405);
+//            phr.setMessage("Failed to add Delivery Person");
+            return phr;
         }
     }
 
     @Override
-    public boolean deleteDeliveryPerson(String id) {
+    public PHResponseType deleteDeliveryPerson(String id) {
+        PHResponseType phr = new PHResponseType();
         try {
             DeliveryPerson dp = em.find(DeliveryPerson.class, id);
-            UserRoles role = (UserRoles) em.createNamedQuery("UserRoles.findByUsername").setParameter("username", dp.getUsername().getUsername()).getSingleResult();
-            em.remove(role);
-            em.remove(dp.getUsername());
-            em.remove(dp);
+            if (dp != null) {
+                UserRoles role = (UserRoles) em.createNamedQuery("UserRoles.findByUsername").setParameter("username", dp.getUsername().getUsername()).getSingleResult();
+                em.remove(role);
+                em.remove(dp.getUsername());
+                em.remove(dp);
 
-            return true;
+                phr.setStatus(200);
+                phr.setMessage("Delivery Person added Successfully");
+            }
+            return phr;
         } catch (Exception ex) {
             System.out.println("Exception found in deleting deliveryperson");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
     }
 
     @Override
-    public boolean editDeliveryPerson(String id, JsonObject data) {
-       try {
+    public PHResponseType editDeliveryPerson(String id, JsonObject data) {
+        PHResponseType phr = new PHResponseType();
+        try {
 //            cli.register(data);
-            DeliveryPerson dp = em.find(DeliveryPerson.class,id);
+            DeliveryPerson dp = em.find(DeliveryPerson.class, id);
             String username = data.getString("username");
-            
+
             Users user = (Users) em.createNamedQuery("Users.findByUsername").setParameter("username", username).getSingleResult();
             user.setName(data.getString("name"));
             user.setPhoneNo(new BigInteger(data.getString("phone_no")));
             em.merge(user);
-            
+
             dp.setUsername(user);
             dp.setAdhaarNumber(new BigInteger(data.getString("aadharNumber")));
             Outlets outlet = em.find(Outlets.class, data.getString("outletId"));
             dp.setOutletId(outlet);
             em.merge(dp);
-            return true;
+            phr.setStatus(200);
+            phr.setMessage("Delivery Person edited Successfully");
+            return phr;
 
         } catch (Exception ex) {
             System.out.println("Exception found in AddDeliveryPerson ");
             ex.printStackTrace();
-            return false;
+            return phr;
         }
     }
 
