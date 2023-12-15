@@ -169,7 +169,7 @@ public class Outlets implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.Outlets[ id=" + id + " ]";
+        return "entities.Outlets[ id=" + id + " ]";
     }
 
 }

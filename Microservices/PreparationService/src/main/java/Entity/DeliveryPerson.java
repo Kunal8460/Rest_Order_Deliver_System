@@ -7,6 +7,7 @@ package Entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "delivery_person")
@@ -54,12 +55,12 @@ public class DeliveryPerson implements Serializable {
     private Double longitude;
     @OneToMany(mappedBy = "deliveryPersonId")
     private Collection<OrderMaster> orderMasterCollection;
-    @JoinColumn(name = "username", referencedColumnName = "username")
-    @ManyToOne
-    private Users username;
     @JoinColumn(name = "outlet_id", referencedColumnName = "id")
     @ManyToOne
     private Outlets outletId;
+    @JoinColumn(name = "username", referencedColumnName = "username")
+    @ManyToOne
+    private Users username;
 
     public DeliveryPerson() {
     }
@@ -108,6 +109,7 @@ public class DeliveryPerson implements Serializable {
         this.longitude = longitude;
     }
 
+    @JsonbTransient
     public Collection<OrderMaster> getOrderMasterCollection() {
         return orderMasterCollection;
     }
@@ -116,20 +118,20 @@ public class DeliveryPerson implements Serializable {
         this.orderMasterCollection = orderMasterCollection;
     }
 
-    public Users getUsername() {
-        return username;
-    }
-
-    public void setUsername(Users username) {
-        this.username = username;
-    }
-
     public Outlets getOutletId() {
         return outletId;
     }
 
     public void setOutletId(Outlets outletId) {
         this.outletId = outletId;
+    }
+
+    public Users getUsername() {
+        return username;
+    }
+
+    public void setUsername(Users username) {
+        this.username = username;
     }
 
     @Override

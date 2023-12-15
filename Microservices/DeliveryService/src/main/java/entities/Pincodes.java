@@ -27,7 +27,7 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "Pincodes.findAll", query = "SELECT p FROM Pincodes p"),
     @NamedQuery(name = "Pincodes.findByPincode", query = "SELECT p FROM Pincodes p WHERE p.pincode = :pincode"),
-    @NamedQuery(name = "Pincodes.findByDistrict", query = "SELECT p FROM Pincodes p WHERE p.district = :district"),
+    @NamedQuery(name = "Pincodes.findByDistrict", query = "SELECT p FROM Pincodes p WHERE p.district LIKE :district"),
     @NamedQuery(name = "Pincodes.findByState", query = "SELECT p FROM Pincodes p WHERE p.state = :state")})
 public class Pincodes implements Serializable {
 
@@ -119,7 +119,7 @@ public class Pincodes implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.Pincodes[ pincode=" + pincode + " ]";
+        return "entities.Pincodes[ pincode=" + pincode + " ]";
     }
 
 }

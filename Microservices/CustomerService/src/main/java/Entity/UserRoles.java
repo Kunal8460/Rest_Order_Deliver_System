@@ -15,7 +15,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "user_roles")
@@ -81,7 +81,7 @@ public class UserRoles implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.UserRoles[ userRolesPK=" + userRolesPK + " ]";
+        return "Entity.UserRoles[ userRolesPK=" + userRolesPK + " ]";
     }
     
 }

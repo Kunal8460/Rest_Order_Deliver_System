@@ -94,7 +94,7 @@ public class Sizes implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.Sizes[ id=" + id + " ]";
+        return "entities.Sizes[ id=" + id + " ]";
     }
     
 }

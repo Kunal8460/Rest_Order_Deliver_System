@@ -13,7 +13,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Embeddable
 public class UserRolesPK implements Serializable {
@@ -79,7 +79,7 @@ public class UserRolesPK implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.UserRolesPK[ username=" + username + ", groupname=" + groupname + " ]";
+        return "Entity.UserRolesPK[ username=" + username + ", groupname=" + groupname + " ]";
     }
     
 }

@@ -6,6 +6,7 @@ package Entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,14 +20,14 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "pincodes")
 @NamedQueries({
     @NamedQuery(name = "Pincodes.findAll", query = "SELECT p FROM Pincodes p"),
     @NamedQuery(name = "Pincodes.findByPincode", query = "SELECT p FROM Pincodes p WHERE p.pincode = :pincode"),
-    @NamedQuery(name = "Pincodes.findByDistrict", query = "SELECT p FROM Pincodes p WHERE p.district = :district"),
+    @NamedQuery(name = "Pincodes.findByDistrict", query = "SELECT p FROM Pincodes p WHERE p.district LIKE :district"),
     @NamedQuery(name = "Pincodes.findByState", query = "SELECT p FROM Pincodes p WHERE p.state = :state")})
 public class Pincodes implements Serializable {
 
@@ -78,6 +79,7 @@ public class Pincodes implements Serializable {
         this.state = state;
     }
 
+    @JsonbTransient
     public Collection<AddressMaster> getAddressMasterCollection() {
         return addressMasterCollection;
     }
@@ -86,6 +88,7 @@ public class Pincodes implements Serializable {
         this.addressMasterCollection = addressMasterCollection;
     }
 
+    @JsonbTransient
     public Collection<Outlets> getOutletsCollection() {
         return outletsCollection;
     }
@@ -116,7 +119,7 @@ public class Pincodes implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Pincodes[ pincode=" + pincode + " ]";
+        return "Entity.Pincodes[ pincode=" + pincode + " ]";
     }
-    
+
 }

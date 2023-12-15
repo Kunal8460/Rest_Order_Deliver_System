@@ -6,6 +6,7 @@ package Entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,7 +23,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "items")
@@ -121,7 +122,8 @@ public class Items implements Serializable {
     public void setIsVeg(Boolean isVeg) {
         this.isVeg = isVeg;
     }
-
+    
+    @JsonbTransient
     public Collection<Ratings> getRatingsCollection() {
         return ratingsCollection;
     }
@@ -130,6 +132,7 @@ public class Items implements Serializable {
         this.ratingsCollection = ratingsCollection;
     }
 
+    @JsonbTransient
     public Collection<OrderLine> getOrderLineCollection() {
         return orderLineCollection;
     }

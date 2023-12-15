@@ -98,5 +98,5 @@ public class TaxSlabs implements Serializable {
     public String toString() {
         return "entities.TaxSlabs[ id=" + id + " ]";
     }
-
+    
 }

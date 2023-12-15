@@ -62,6 +62,8 @@ public class Users implements Serializable {
     @Lob
     @Column(name = "profile_photo")
     private byte[] profilePhoto;
+    @Column(name = "credits")
+    private Double credits;
     @OneToMany(mappedBy = "userId")
     private Collection<AddressMaster> addressMasterCollection;
     @OneToMany(mappedBy = "userId")
@@ -134,6 +136,14 @@ public class Users implements Serializable {
 
     public void setProfilePhoto(byte[] profilePhoto) {
         this.profilePhoto = profilePhoto;
+    }
+
+    public Double getCredits() {
+        return credits;
+    }
+
+    public void setCredits(Double credits) {
+        this.credits = credits;
     }
 
     @JsonbTransient

@@ -96,7 +96,7 @@ public class TaxSlabs implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.TaxSlabs[ id=" + id + " ]";
+        return "entities.TaxSlabs[ id=" + id + " ]";
     }
-
+    
 }

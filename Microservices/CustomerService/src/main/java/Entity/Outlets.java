@@ -7,6 +7,7 @@ package Entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +24,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "outlets")
@@ -120,6 +121,7 @@ public class Outlets implements Serializable {
         this.longitude = longitude;
     }
 
+    @JsonbTransient
     public Collection<OrderMaster> getOrderMasterCollection() {
         return orderMasterCollection;
     }
@@ -136,6 +138,7 @@ public class Outlets implements Serializable {
         this.pincode = pincode;
     }
 
+    @JsonbTransient
     public Collection<DeliveryPerson> getDeliveryPersonCollection() {
         return deliveryPersonCollection;
     }
@@ -166,7 +169,7 @@ public class Outlets implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Outlets[ id=" + id + " ]";
+        return "Entity.Outlets[ id=" + id + " ]";
     }
-    
+
 }

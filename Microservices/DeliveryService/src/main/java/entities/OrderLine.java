@@ -106,7 +106,7 @@ public class OrderLine implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.OrderLine[ id=" + id + " ]";
+        return "entities.OrderLine[ id=" + id + " ]";
     }
     
 }

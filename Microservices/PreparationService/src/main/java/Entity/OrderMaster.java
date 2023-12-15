@@ -7,6 +7,7 @@ package Entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,7 +25,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "order_master")
@@ -36,7 +37,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "OrderMaster.findByPaymentMethod", query = "SELECT o FROM OrderMaster o WHERE o.paymentMethod = :paymentMethod"),
     @NamedQuery(name = "OrderMaster.findByDeliveryCharge", query = "SELECT o FROM OrderMaster o WHERE o.deliveryCharge = :deliveryCharge"),
     @NamedQuery(name = "OrderMaster.findByPayableAmount", query = "SELECT o FROM OrderMaster o WHERE o.payableAmount = :payableAmount"),
-    @NamedQuery(name = "OrderMaster.findByOrderDate", query = "SELECT o FROM OrderMaster o WHERE o.orderDate = :orderDate")})
+    @NamedQuery(name = "OrderMaster.findByOrderDate", query = "SELECT o FROM OrderMaster o WHERE o.orderDate = :orderDate"),
+    @NamedQuery(name = "OrderMaster.findByCustomerId", query = "SELECT o FROM OrderMaster o WHERE o.userId = :userid AND o.orderStatus=:status ORDER BY o.orderDate DESC ")
+})
 public class OrderMaster implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,15 +65,15 @@ public class OrderMaster implements Serializable {
     @Column(name = "order_date")
     @Temporal(TemporalType.DATE)
     private Date orderDate;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
-    private Users userId;
     @JoinColumn(name = "delivery_person_id", referencedColumnName = "id")
     @ManyToOne
     private DeliveryPerson deliveryPersonId;
     @JoinColumn(name = "outlet_id", referencedColumnName = "id")
     @ManyToOne
     private Outlets outletId;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne
+    private Users userId;
     @OneToMany(mappedBy = "orderId")
     private Collection<OrderLine> orderLineCollection;
 
@@ -137,14 +140,6 @@ public class OrderMaster implements Serializable {
         this.orderDate = orderDate;
     }
 
-    public Users getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Users userId) {
-        this.userId = userId;
-    }
-
     public DeliveryPerson getDeliveryPersonId() {
         return deliveryPersonId;
     }
@@ -161,6 +156,15 @@ public class OrderMaster implements Serializable {
         this.outletId = outletId;
     }
 
+    public Users getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Users userId) {
+        this.userId = userId;
+    }
+
+    @JsonbTransient
     public Collection<OrderLine> getOrderLineCollection() {
         return orderLineCollection;
     }
@@ -193,5 +197,5 @@ public class OrderMaster implements Serializable {
     public String toString() {
         return "Entity.OrderMaster[ id=" + id + " ]";
     }
-    
+
 }

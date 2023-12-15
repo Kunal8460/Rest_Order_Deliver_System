@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -20,7 +21,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "address_master")
@@ -40,12 +41,12 @@ public class AddressMaster implements Serializable {
     @Size(max = 65535)
     @Column(name = "adderss")
     private String adderss;
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne
-    private Users userId;
     @JoinColumn(name = "pincode", referencedColumnName = "pincode")
     @ManyToOne
     private Pincodes pincode;
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @ManyToOne
+    private Users userId;
 
     public AddressMaster() {
     }
@@ -70,20 +71,20 @@ public class AddressMaster implements Serializable {
         this.adderss = adderss;
     }
 
-    public Users getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Users userId) {
-        this.userId = userId;
-    }
-
     public Pincodes getPincode() {
         return pincode;
     }
 
     public void setPincode(Pincodes pincode) {
         this.pincode = pincode;
+    }
+
+    public Users getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Users userId) {
+        this.userId = userId;
     }
 
     @Override

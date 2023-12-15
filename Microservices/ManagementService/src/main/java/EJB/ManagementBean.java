@@ -69,7 +69,8 @@ public class ManagementBean implements ManagementBeanLocal {
             em.persist(newItem);
         } catch (Exception ex) {
             System.out.println("Exception found in AddItems ====> ");
-            ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Item Adding Failed");
             return phr;
         }
         return phr;
@@ -88,6 +89,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception  found in DeleteItems ====> ");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Item deleting Failed");
             return phr;
         }
         return phr;
@@ -123,6 +126,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception occured in EditItem =======>");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Item Editing Failed");
             return phr;
         }
     }
@@ -171,6 +176,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception found in Add Item Category");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Item Category Adding Failed");
             return phr;
         }
         return phr;
@@ -189,6 +196,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception  found in DeleteItemCategory ====> ");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Item Category Deleting Failed");
             return phr;
         }
         return phr;
@@ -212,6 +221,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception found in Delete Item Category");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Item Category Editing Failed");
             return phr;
         }
         return phr;
@@ -267,6 +278,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception adding outlets");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Outlet Adding Failed");
             return phr;
         }
         return phr;
@@ -285,6 +298,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception found in Deleting outlet");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Outlet Deleting Failed");
             return phr;
         }
         return phr;
@@ -310,6 +325,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception found in Editing outlet");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Outlet Editing Failed");
             return phr;
         }
         return phr;
@@ -359,9 +376,8 @@ public class ManagementBean implements ManagementBeanLocal {
 
         } catch (Exception ex) {
             System.out.println("Exception found in AddDeliveryPerson ");
-            //            ex.printStackTrace();
-//            phr.setStatus(405);
-//            phr.setMessage("Failed to add Delivery Person");
+            phr.setStatus(405);
+            phr.setMessage("Failed to add Delivery Person");
             return phr;
         }
     }
@@ -384,6 +400,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception found in deleting deliveryperson");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Failed to Delete Delivery Person");
             return phr;
         }
     }
@@ -413,6 +431,8 @@ public class ManagementBean implements ManagementBeanLocal {
         } catch (Exception ex) {
             System.out.println("Exception found in AddDeliveryPerson ");
             ex.printStackTrace();
+            phr.setStatus(405);
+            phr.setMessage("Failed to Edit Delivery Person");
             return phr;
         }
     }

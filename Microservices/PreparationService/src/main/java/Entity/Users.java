@@ -7,6 +7,7 @@ package Entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "users")
@@ -31,8 +32,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Users.findById", query = "SELECT u FROM Users u WHERE u.id = :id"),
     @NamedQuery(name = "Users.findByName", query = "SELECT u FROM Users u WHERE u.name = :name"),
     @NamedQuery(name = "Users.findByUsername", query = "SELECT u FROM Users u WHERE u.username = :username"),
-    @NamedQuery(name = "Users.findByPhoneNo", query = "SELECT u FROM Users u WHERE u.phoneNo = :phoneNo"),
-    @NamedQuery(name = "Users.findByCredits", query = "SELECT u FROM Users u WHERE u.credits = :credits")})
+    @NamedQuery(name = "Users.findByPhoneNo", query = "SELECT u FROM Users u WHERE u.phoneNo = :phoneNo")})
 public class Users implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -62,7 +62,6 @@ public class Users implements Serializable {
     @Lob
     @Column(name = "profile_photo")
     private byte[] profilePhoto;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "credits")
     private Double credits;
     @OneToMany(mappedBy = "userId")
@@ -147,6 +146,7 @@ public class Users implements Serializable {
         this.credits = credits;
     }
 
+    @JsonbTransient
     public Collection<AddressMaster> getAddressMasterCollection() {
         return addressMasterCollection;
     }
@@ -155,6 +155,7 @@ public class Users implements Serializable {
         this.addressMasterCollection = addressMasterCollection;
     }
 
+    @JsonbTransient
     public Collection<OrderMaster> getOrderMasterCollection() {
         return orderMasterCollection;
     }
@@ -163,6 +164,7 @@ public class Users implements Serializable {
         this.orderMasterCollection = orderMasterCollection;
     }
 
+    @JsonbTransient
     public Collection<UserRoles> getUserRolesCollection() {
         return userRolesCollection;
     }
@@ -171,6 +173,7 @@ public class Users implements Serializable {
         this.userRolesCollection = userRolesCollection;
     }
 
+    @JsonbTransient
     public Collection<Ratings> getRatingsCollection() {
         return ratingsCollection;
     }
@@ -179,6 +182,7 @@ public class Users implements Serializable {
         this.ratingsCollection = ratingsCollection;
     }
 
+    @JsonbTransient
     public Collection<DeliveryPerson> getDeliveryPersonCollection() {
         return deliveryPersonCollection;
     }
@@ -211,5 +215,5 @@ public class Users implements Serializable {
     public String toString() {
         return "Entity.Users[ id=" + id + " ]";
     }
-    
+
 }

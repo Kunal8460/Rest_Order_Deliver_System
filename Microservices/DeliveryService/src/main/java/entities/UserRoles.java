@@ -81,7 +81,7 @@ public class UserRoles implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.UserRoles[ userRolesPK=" + userRolesPK + " ]";
+        return "entities.UserRoles[ userRolesPK=" + userRolesPK + " ]";
     }
     
 }

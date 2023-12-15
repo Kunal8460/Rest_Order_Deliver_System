@@ -108,7 +108,7 @@ public class ItemCategory implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.ItemCategory[ id=" + id + " ]";
+        return "entities.ItemCategory[ id=" + id + " ]";
     }
 
 }

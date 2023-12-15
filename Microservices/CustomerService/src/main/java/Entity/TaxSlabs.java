@@ -6,6 +6,7 @@ package Entity;
 
 import java.io.Serializable;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +20,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "tax_slabs")
@@ -64,6 +65,7 @@ public class TaxSlabs implements Serializable {
         this.percentage = percentage;
     }
 
+    @JsonbTransient
     public Collection<Items> getItemsCollection() {
         return itemsCollection;
     }
@@ -94,7 +96,7 @@ public class TaxSlabs implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.TaxSlabs[ id=" + id + " ]";
+        return "Entity.TaxSlabs[ id=" + id + " ]";
     }
     
 }

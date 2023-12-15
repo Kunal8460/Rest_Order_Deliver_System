@@ -122,7 +122,7 @@ public class Items implements Serializable {
     public void setIsVeg(Boolean isVeg) {
         this.isVeg = isVeg;
     }
-
+    
     @JsonbTransient
     public Collection<Ratings> getRatingsCollection() {
         return ratingsCollection;
@@ -179,7 +179,7 @@ public class Items implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.Items[ id=" + id + " ]";
+        return "entities.Items[ id=" + id + " ]";
     }
-
+    
 }

@@ -1,3 +1,4 @@
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
@@ -108,7 +109,7 @@ public class AddressMaster implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.AddressMaster[ id=" + id + " ]";
+        return "entities.AddressMaster[ id=" + id + " ]";
     }
     
 }

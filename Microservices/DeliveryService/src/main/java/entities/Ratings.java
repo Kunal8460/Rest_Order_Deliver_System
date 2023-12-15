@@ -106,7 +106,7 @@ public class Ratings implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.Ratings[ id=" + id + " ]";
+        return "entities.Ratings[ id=" + id + " ]";
     }
     
 }

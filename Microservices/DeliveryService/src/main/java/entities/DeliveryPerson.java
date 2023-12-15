@@ -156,7 +156,7 @@ public class DeliveryPerson implements Serializable {
 
     @Override
     public String toString() {
-        return "EJB.DeliveryPerson[ id=" + id + " ]";
+        return "entities.DeliveryPerson[ id=" + id + " ]";
     }
-
+    
 }

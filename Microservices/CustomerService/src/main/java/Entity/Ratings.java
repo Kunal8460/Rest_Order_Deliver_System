@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "ratings")
@@ -106,7 +106,7 @@ public class Ratings implements Serializable {
 
     @Override
     public String toString() {
-        return "Entities.Ratings[ id=" + id + " ]";
+        return "Entity.Ratings[ id=" + id + " ]";
     }
     
 }

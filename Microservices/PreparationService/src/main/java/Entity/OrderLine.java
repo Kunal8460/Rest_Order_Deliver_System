@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author Bhatt Jaimin
+ * @author HP Laptop
  */
 @Entity
 @Table(name = "order_line")
@@ -38,12 +38,12 @@ public class OrderLine implements Serializable {
     private String id;
     @Column(name = "quantity")
     private Integer quantity;
-    @JoinColumn(name = "order_id", referencedColumnName = "id")
-    @ManyToOne
-    private OrderMaster orderId;
     @JoinColumn(name = "item_id", referencedColumnName = "id")
     @ManyToOne
     private Items itemId;
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @ManyToOne
+    private OrderMaster orderId;
 
     public OrderLine() {
     }
@@ -68,20 +68,20 @@ public class OrderLine implements Serializable {
         this.quantity = quantity;
     }
 
-    public OrderMaster getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(OrderMaster orderId) {
-        this.orderId = orderId;
-    }
-
     public Items getItemId() {
         return itemId;
     }
 
     public void setItemId(Items itemId) {
         this.itemId = itemId;
+    }
+
+    public OrderMaster getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(OrderMaster orderId) {
+        this.orderId = orderId;
     }
 
     @Override
