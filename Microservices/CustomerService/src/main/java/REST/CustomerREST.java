@@ -116,7 +116,7 @@ public class CustomerREST {
     public Response login(@RequestBody JsonObject data){
         JsonObject obj= ejb.login(data);
         if(obj==null){
-            return Response.status(404).build();
+            return Response.status(405).build();
         }else{
            return Response.status(200).entity(obj).build(); 
         }

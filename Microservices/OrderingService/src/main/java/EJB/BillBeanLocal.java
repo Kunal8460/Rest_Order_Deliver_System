@@ -6,6 +6,7 @@ package EJB;
 
 import javax.ejb.Local;
 import javax.json.JsonObject;
+import org.json.JSONObject;
 import utilities.PHResponseType;
 
 /**
