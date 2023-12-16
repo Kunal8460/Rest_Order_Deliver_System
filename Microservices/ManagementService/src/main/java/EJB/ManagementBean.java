@@ -18,6 +18,7 @@ import entities.UserRoles;
 import entities.Users;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Collection;
 import javax.inject.Inject;
 import javax.json.JsonObject;
@@ -61,7 +62,8 @@ public class ManagementBean implements ManagementBeanLocal {
             TaxSlabs taxSlab = (TaxSlabs) em.createNamedQuery("TaxSlabs.findById").setParameter("id", taxSlabId).getSingleResult();
             newItem.setTaxSlabId(taxSlab);
             newItem.setPrice(price);
-//            newItem.setItemImage(itemImage);
+            byte[] itemImage = Base64.getDecoder().decode(data.getString("itemImage").getBytes());
+            newItem.setItemImage(itemImage);
             newItem.setIsVeg(isVeg);
 
             phr.setStatus(200);
@@ -116,7 +118,8 @@ public class ManagementBean implements ManagementBeanLocal {
             TaxSlabs taxSlab = (TaxSlabs) em.createNamedQuery("TaxSlabs.findById").setParameter("id", taxSlabId).getSingleResult();
             item.setTaxSlabId(taxSlab);
             item.setPrice(price);
-//            newItem.setItemImage(itemImage);
+            byte[] itemImage = Base64.getDecoder().decode(data.getString("itemImage").getBytes());
+            item.setItemImage(itemImage);
             item.setIsVeg(isVeg);
 
             phr.setStatus(200);
