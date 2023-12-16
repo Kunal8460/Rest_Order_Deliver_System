@@ -7,6 +7,7 @@ package Entity;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,12 +65,15 @@ public class OrderMaster implements Serializable {
     private Date orderDate;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonbTransient
     private Users userId;
     @JoinColumn(name = "delivery_person_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonbTransient
     private DeliveryPerson deliveryPersonId;
     @JoinColumn(name = "outlet_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonbTransient
     private Outlets outletId;
     @OneToMany(mappedBy = "orderId")
     private Collection<OrderLine> orderLineCollection;
@@ -160,7 +164,7 @@ public class OrderMaster implements Serializable {
     public void setOutletId(Outlets outletId) {
         this.outletId = outletId;
     }
-
+@JsonbTransient
     public Collection<OrderLine> getOrderLineCollection() {
         return orderLineCollection;
     }

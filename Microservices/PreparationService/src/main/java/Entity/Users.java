@@ -7,6 +7,7 @@ package Entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -66,14 +67,19 @@ public class Users implements Serializable {
     @Column(name = "credits")
     private Double credits;
     @OneToMany(mappedBy = "userId")
+    @JsonbTransient
     private Collection<AddressMaster> addressMasterCollection;
     @OneToMany(mappedBy = "userId")
+    @JsonbTransient
     private Collection<OrderMaster> orderMasterCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "users")
+    @JsonbTransient
     private Collection<UserRoles> userRolesCollection;
     @OneToMany(mappedBy = "userId")
+    @JsonbTransient
     private Collection<Ratings> ratingsCollection;
     @OneToMany(mappedBy = "username")
+    @JsonbTransient
     private Collection<DeliveryPerson> deliveryPersonCollection;
 
     public Users() {

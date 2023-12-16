@@ -35,6 +35,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Outlets.findByPhoneNo", query = "SELECT o FROM Outlets o WHERE o.phoneNo = :phoneNo"),
     @NamedQuery(name = "Outlets.findByLatitude", query = "SELECT o FROM Outlets o WHERE o.latitude = :latitude"),
     @NamedQuery(name = "Outlets.findByLongitude", query = "SELECT o FROM Outlets o WHERE o.longitude = :longitude")})
+    
 public class Outlets implements Serializable {
 
     private static final long serialVersionUID = 1L;

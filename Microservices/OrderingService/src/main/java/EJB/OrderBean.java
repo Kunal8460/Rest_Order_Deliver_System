@@ -9,8 +9,12 @@ import entities.OrderMaster;
 import entities.Outlets;
 import entities.Pincodes;
 import entities.Users;
+import java.math.BigDecimal;
 import java.util.Collection;
 import javax.ejb.Stateless;
+import javax.json.Json;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -59,8 +63,29 @@ public class OrderBean implements OrderBeanLocal {
     }
 
     @Override
-    public Collection<Outlets> getOutlets() {
-        return null;
+    public JsonObject getOutlets(int pincode) {
+        try{
+            Pincodes pin = getDistrictNameByPincode(pincode);
+       Collection<Outlets> outlets = em.createQuery("SELECT o FROM Outlets o WHERE o.pincode.district = :district").setParameter("district", pin.getDistrict()).getResultList();
+        JsonArrayBuilder jsonarray = Json.createArrayBuilder();
+       for (Outlets item : outlets) {
+           jsonarray.add(Json.createObjectBuilder()
+                   .add("outletid", item.getId())
+                   .add("name",item.getName())
+                   .build()
+           );
+               
+                   
+       }
+       JsonObject obj = Json.createObjectBuilder()
+                    .add("outlets", jsonarray)
+                    .build();
+       return obj;
+        }catch(Exception ex){
+            ex.printStackTrace();
+            return null;
+        }
+       
     }
     
     

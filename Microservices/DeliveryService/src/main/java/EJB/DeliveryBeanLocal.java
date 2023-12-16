@@ -6,6 +6,7 @@ package EJB;
 
 import javax.ejb.Local;
 import org.json.JSONObject;
+import utilities.PHResponseType;
 
 /**
  *
@@ -16,6 +17,6 @@ public interface DeliveryBeanLocal {
     
     public String deliveryPersonAllocation(String orderId,String outletid);
     
-    public boolean updateDeliveryStatusToDelivered(String orderId);
+    public PHResponseType updateDeliveryStatusToDelivered(String orderId);
         
 }

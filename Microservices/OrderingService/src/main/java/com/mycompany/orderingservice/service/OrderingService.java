@@ -4,6 +4,7 @@ import EJB.BillBeanLocal;
 import EJB.OrderBeanLocal;
 import entities.Items;
 import entities.OrderMaster;
+import entities.Outlets;
 import entities.Pincodes;
 import java.util.Collection;
 import javax.ejb.EJB;
@@ -72,6 +73,17 @@ public class OrderingService {
         } else {
             return Response.status(405, "Failed to Create Order").build();
         }
+    }
+     @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/getOutletByDistrict/{pincode}")
+    public Response getOutletByDistrict(@PathParam("pincode") int pincode) {
+        JsonObject obj = odb.getOutlets(pincode);
+       if(obj!=null){
+           return Response.status(200).entity(obj).build();
+       }else{
+           return Response.status(405,"failed").build();
+       }
     }
 
 }

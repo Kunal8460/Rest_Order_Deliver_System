@@ -7,6 +7,7 @@ package Entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Collection;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -53,12 +54,16 @@ public class DeliveryPerson implements Serializable {
     @Column(name = "longitude")
     private Double longitude;
     @OneToMany(mappedBy = "deliveryPersonId")
+    @JsonbTransient
     private Collection<OrderMaster> orderMasterCollection;
     @JoinColumn(name = "username", referencedColumnName = "username")
     @ManyToOne
+    @JsonbTransient
     private Users username;
     @JoinColumn(name = "outlet_id", referencedColumnName = "id")
+    
     @ManyToOne
+    @JsonbTransient
     private Outlets outletId;
 
     public DeliveryPerson() {
@@ -108,6 +113,7 @@ public class DeliveryPerson implements Serializable {
         this.longitude = longitude;
     }
 
+    @JsonbTransient
     public Collection<OrderMaster> getOrderMasterCollection() {
         return orderMasterCollection;
     }
