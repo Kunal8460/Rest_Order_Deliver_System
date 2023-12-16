@@ -140,7 +140,7 @@ public class CustomerREST {
     public Response getUserData(@PathParam("id")String id){
         JsonObject obj=ejb.getUserData(id);
         if(obj==null){
-            return Response.status(404).build();
+            return Response.status(405).build();
         }else{
            return Response.status(200).entity(obj).build(); 
         }

@@ -20,7 +20,9 @@ import javax.json.JsonObject;
 import javax.ws.rs.POST;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import utilities.PHResponseType;
 
 /**
  * REST Web Service
@@ -36,20 +38,36 @@ public class preprationREST {
     }
 
     @GET
-    @Path("/getOrders/outletid")
+    @Path("/getOrders/{outletid}/{status}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<OrderMaster> getOrderInPrepration(@PathParam("outletid")String outletid) {
-      return ejb.getOrderInPrepration(outletid);
+    public JsonObject getOrdersByOutletandStatus(@PathParam("outletid")String outletid,@PathParam("status")String status) {
+        
+      return ejb.getOrdersByOutletandStatus(outletid,status);
+    }
+    
+    @GET
+    @Path("/getOrders/{customerid}")
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public JsonObject getOrderStatusByCustomer(@PathParam("customerid")String customerid) {
+        
+      return ejb.getOrderStatusByCustomer(customerid);
     }
     
     @POST
     @Path("/postApprovedOrder")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public boolean sendOrderToDelivery(@RequestBody JsonObject data) {
+    public Response sendOrderToDelivery(@RequestBody JsonObject data) {
         String orderid=data.getString("orderid");
-      return ejb.sendOrderToDelivery(orderid);
+        String outletid=data.getString("outletid");
+        PHResponseType phr = ejb.sendOrderToDelivery(orderid,outletid);
+      if(phr.getStatus()==200){
+          return Response.status(200).entity(phr).build();
+      }else{
+          return Response.status(405).entity(phr).build();
+      }
     }
 
 }

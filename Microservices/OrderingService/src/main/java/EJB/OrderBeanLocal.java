@@ -11,6 +11,7 @@ import entities.Pincodes;
 import entities.Users;
 import java.util.Collection;
 import javax.ejb.Local;
+import javax.json.JsonObject;
 
 /**
  *
@@ -21,7 +22,7 @@ public interface OrderBeanLocal {
     public Collection<Items> getAllItems();
     public Collection<OrderMaster> getOrderHistory(String username, String status); 
     public OrderMaster getOrderById(String id);
-    public Collection<Outlets> getOutlets();
+    public JsonObject getOutlets(int pinocode);
     public Pincodes getDistrictNameByPincode(int pincode);
     public Collection<Pincodes> getDistrictByName(String name);
 }

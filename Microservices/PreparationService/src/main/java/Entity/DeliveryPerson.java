@@ -28,12 +28,12 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "delivery_person")
 @NamedQueries({
-    @NamedQuery(name = "DeliveryPerson.findAll", query = "SELECT d FROM DeliveryPerson d"),
-    @NamedQuery(name = "DeliveryPerson.findById", query = "SELECT d FROM DeliveryPerson d WHERE d.id = :id"),
-    @NamedQuery(name = "DeliveryPerson.findByCurrentStatus", query = "SELECT d FROM DeliveryPerson d WHERE d.currentStatus = :currentStatus"),
-    @NamedQuery(name = "DeliveryPerson.findByAdhaarNumber", query = "SELECT d FROM DeliveryPerson d WHERE d.adhaarNumber = :adhaarNumber"),
-    @NamedQuery(name = "DeliveryPerson.findByLetitude", query = "SELECT d FROM DeliveryPerson d WHERE d.letitude = :letitude"),
-    @NamedQuery(name = "DeliveryPerson.findByLongitude", query = "SELECT d FROM DeliveryPerson d WHERE d.longitude = :longitude")})
+        @NamedQuery(name = "DeliveryPerson.findAll", query = "SELECT d FROM DeliveryPerson d"),
+        @NamedQuery(name = "DeliveryPerson.findById", query = "SELECT d FROM DeliveryPerson d WHERE d.id = :id"),
+        @NamedQuery(name = "DeliveryPerson.findByCurrentStatus", query = "SELECT d FROM DeliveryPerson d WHERE d.currentStatus = :currentStatus"),
+        @NamedQuery(name = "DeliveryPerson.findByAdhaarNumber", query = "SELECT d FROM DeliveryPerson d WHERE d.adhaarNumber = :adhaarNumber"),
+        @NamedQuery(name = "DeliveryPerson.findByLetitude", query = "SELECT d FROM DeliveryPerson d WHERE d.letitude = :letitude"),
+        @NamedQuery(name = "DeliveryPerson.findByLongitude", query = "SELECT d FROM DeliveryPerson d WHERE d.longitude = :longitude") })
 public class DeliveryPerson implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,19 +48,24 @@ public class DeliveryPerson implements Serializable {
     private String currentStatus;
     @Column(name = "adhaar_number")
     private BigInteger adhaarNumber;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?) @Min(value=?)//if you know range of your decimal fields
+    // consider using these annotations to enforce field validation
     @Column(name = "letitude")
     private Double letitude;
     @Column(name = "longitude")
     private Double longitude;
     @OneToMany(mappedBy = "deliveryPersonId")
+    @JsonbTransient
     private Collection<OrderMaster> orderMasterCollection;
-    @JoinColumn(name = "outlet_id", referencedColumnName = "id")
-    @ManyToOne
-    private Outlets outletId;
     @JoinColumn(name = "username", referencedColumnName = "username")
     @ManyToOne
+    @JsonbTransient
     private Users username;
+    @JoinColumn(name = "outlet_id", referencedColumnName = "id")
+
+    @ManyToOne
+    @JsonbTransient
+    private Outlets outletId;
 
     public DeliveryPerson() {
     }
@@ -158,5 +163,5 @@ public class DeliveryPerson implements Serializable {
     public String toString() {
         return "Entity.DeliveryPerson[ id=" + id + " ]";
     }
-    
+
 }

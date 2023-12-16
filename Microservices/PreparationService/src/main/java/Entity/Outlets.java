@@ -59,11 +59,13 @@ public class Outlets implements Serializable {
     @Column(name = "longitude")
     private Double longitude;
     @OneToMany(mappedBy = "outletId")
+    @JsonbTransient
     private Collection<OrderMaster> orderMasterCollection;
     @JoinColumn(name = "pincode", referencedColumnName = "pincode")
     @ManyToOne
     private Pincodes pincode;
     @OneToMany(mappedBy = "outletId")
+    @JsonbTransient
     private Collection<DeliveryPerson> deliveryPersonCollection;
 
     public Outlets() {
