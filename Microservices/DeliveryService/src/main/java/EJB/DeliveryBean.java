@@ -16,6 +16,7 @@ import javax.persistence.PersistenceContext;
 import org.json.JSONObject;
 import utilities.Enums;
 import utilities.Enums.OrderStatus;
+import utilities.PHResponseType;
 import utilities.Utils;
 
 /**
@@ -55,16 +56,22 @@ public class DeliveryBean implements DeliveryBeanLocal {
 
     //This method is called by Preparation Service
     @Override
-    public boolean updateDeliveryStatusToDelivered(String orderId) {
+    public PHResponseType updateDeliveryStatusToDelivered(String orderId) {
+        PHResponseType response = new PHResponseType();
         try {
             OrderMaster order = em.find(OrderMaster.class, orderId);
             order.setOrderStatus(Enums.OrderStatus.DELIVERED.toString());
+             response.setStatus(200);
+          response.setMessage("Delivery status updated to DELIVERED!!!");
+          return response;
         } catch (Exception ex) {
             System.out.println("Exceptuon occured in Updating delivery status to Delivered");
             ex.printStackTrace();
-            return false;
+            response.setStatus(405);
+          response.setMessage("failed!!!");
+          return response;
         }
-        return true;
+        
     }
 
     //To update any status via path parameter

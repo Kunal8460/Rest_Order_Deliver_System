@@ -21,18 +21,18 @@ public class MPJWTToken {
     private Long iat; // issued at
     private String sub; // subject
     private String upn; // value for name in Principal
-    private String preferredUsername;  // value for name in Principal
+    private String preferredUsername; // value for name in Principal
     private List<String> groups = new ArrayList<>();
-        /*
-    "iss": "https://server.example.com",
-            "aud": "s6BhdRkqt3",
-            "jti": "a-123",
-            "exp": 1311281970,
-            "iat": 1311280970,
-            "sub": "24400320",
-            "upn": "jdoe@server.example.com",
-            "groups": ["red-group", "green-group", "admin-group", "admin"],
-    */
+    /*
+     * "iss": "https://server.example.com",
+     * "aud": "s6BhdRkqt3",
+     * "jti": "a-123",
+     * "exp": 1311281970,
+     * "iat": 1311280970,
+     * "sub": "24400320",
+     * "upn": "jdoe@server.example.com",
+     * "groups": ["red-group", "green-group", "admin-group", "admin"],
+     */
 
     private List<String> roles;
     private Map<String, String> additionalClaims;
@@ -138,7 +138,7 @@ public class MPJWTToken {
         jsonObject.put("iss", iss);
         jsonObject.put("aud", aud);
         jsonObject.put("jti", jti);
-        jsonObject.put("exp", exp );
+        jsonObject.put("exp", exp);
         jsonObject.put("iat", iat);
         jsonObject.put("sub", sub);
         jsonObject.put("upn", upn);

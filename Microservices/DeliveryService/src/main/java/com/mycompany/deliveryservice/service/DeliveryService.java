@@ -10,6 +10,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import utilities.PHResponseType;
 
 @Path("/delivery")
 public class DeliveryService {
@@ -34,10 +35,11 @@ public class DeliveryService {
     @GET
     @Path("/updateDeliveryStatusToDelivered/{orderid}")
     public Response updateDeliveryStatusToDelivered(@PathParam("orderid") String orderid) {
-        if (dlb.updateDeliveryStatusToDelivered(orderid)) {
-            return Response.status(200, "Delivery status updated to DELIVERED").build();
+         PHResponseType phr = dlb.updateDeliveryStatusToDelivered(orderid);
+        if (phr.getStatus()==200) {
+            return Response.status(200).entity(phr).build();
         } else {
-            return Response.status(405, "Delivery status update Falied !!").build();
+            return Response.status(405).entity(405).build();
         }
     }
 

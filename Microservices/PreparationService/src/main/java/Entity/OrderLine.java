@@ -26,6 +26,8 @@ import javax.validation.constraints.Size;
 @NamedQueries({
     @NamedQuery(name = "OrderLine.findAll", query = "SELECT o FROM OrderLine o"),
     @NamedQuery(name = "OrderLine.findById", query = "SELECT o FROM OrderLine o WHERE o.id = :id"),
+    @NamedQuery(name = "OrderLine.findByOrderId", query = "SELECT o FROM OrderLine o WHERE o.orderId.id = :id"),
+   
     @NamedQuery(name = "OrderLine.findByQuantity", query = "SELECT o FROM OrderLine o WHERE o.quantity = :quantity")})
 public class OrderLine implements Serializable {
 

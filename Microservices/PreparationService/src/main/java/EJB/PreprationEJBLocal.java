@@ -7,6 +7,8 @@ package EJB;
 import Entity.OrderMaster;
 import java.util.List;
 import javax.ejb.Local;
+import javax.json.JsonObject;
+import utilities.PHResponseType;
 
 /**
  *
@@ -14,6 +16,8 @@ import javax.ejb.Local;
  */
 @Local
 public interface PreprationEJBLocal {
-    List<OrderMaster> getOrderInPrepration(String outlet_id);
-    boolean sendOrderToDelivery(String orderid);
+    JsonObject getOrdersByOutletandStatus(String outlet_id,String status);
+    PHResponseType sendOrderToDelivery(String orderid,String outletid);
+    public JsonObject  getOrderStatusByCustomer(String customerid);
+    
 }

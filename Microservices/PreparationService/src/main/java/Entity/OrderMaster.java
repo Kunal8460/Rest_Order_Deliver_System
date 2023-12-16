@@ -30,15 +30,15 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "order_master")
 @NamedQueries({
-    @NamedQuery(name = "OrderMaster.findAll", query = "SELECT o FROM OrderMaster o"),
-    @NamedQuery(name = "OrderMaster.findById", query = "SELECT o FROM OrderMaster o WHERE o.id = :id"),
-    @NamedQuery(name = "OrderMaster.findByOrderStatus", query = "SELECT o FROM OrderMaster o WHERE o.orderStatus = :orderStatus"),
-    @NamedQuery(name = "OrderMaster.findByAmount", query = "SELECT o FROM OrderMaster o WHERE o.amount = :amount"),
-    @NamedQuery(name = "OrderMaster.findByPaymentMethod", query = "SELECT o FROM OrderMaster o WHERE o.paymentMethod = :paymentMethod"),
-    @NamedQuery(name = "OrderMaster.findByDeliveryCharge", query = "SELECT o FROM OrderMaster o WHERE o.deliveryCharge = :deliveryCharge"),
-    @NamedQuery(name = "OrderMaster.findByPayableAmount", query = "SELECT o FROM OrderMaster o WHERE o.payableAmount = :payableAmount"),
-    @NamedQuery(name = "OrderMaster.findByOrderDate", query = "SELECT o FROM OrderMaster o WHERE o.orderDate = :orderDate"),
-    @NamedQuery(name = "OrderMaster.findByCustomerId", query = "SELECT o FROM OrderMaster o WHERE o.userId = :userid AND o.orderStatus=:status ORDER BY o.orderDate DESC ")
+        @NamedQuery(name = "OrderMaster.findAll", query = "SELECT o FROM OrderMaster o"),
+        @NamedQuery(name = "OrderMaster.findById", query = "SELECT o FROM OrderMaster o WHERE o.id = :id"),
+        @NamedQuery(name = "OrderMaster.findByOrderStatus", query = "SELECT o FROM OrderMaster o WHERE o.orderStatus = :orderStatus"),
+        @NamedQuery(name = "OrderMaster.findByAmount", query = "SELECT o FROM OrderMaster o WHERE o.amount = :amount"),
+        @NamedQuery(name = "OrderMaster.findByPaymentMethod", query = "SELECT o FROM OrderMaster o WHERE o.paymentMethod = :paymentMethod"),
+        @NamedQuery(name = "OrderMaster.findByDeliveryCharge", query = "SELECT o FROM OrderMaster o WHERE o.deliveryCharge = :deliveryCharge"),
+        @NamedQuery(name = "OrderMaster.findByPayableAmount", query = "SELECT o FROM OrderMaster o WHERE o.payableAmount = :payableAmount"),
+        @NamedQuery(name = "OrderMaster.findByOrderDate", query = "SELECT o FROM OrderMaster o WHERE o.orderDate = :orderDate"),
+        @NamedQuery(name = "OrderMaster.findByCustomerId", query = "SELECT o FROM OrderMaster o WHERE o.userId = :userid AND o.orderStatus=:status ORDER BY o.orderDate DESC ")
 })
 public class OrderMaster implements Serializable {
 
@@ -52,7 +52,8 @@ public class OrderMaster implements Serializable {
     @Size(max = 50)
     @Column(name = "order_status")
     private String orderStatus;
-    // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
+    // @Max(value=?) @Min(value=?)//if you know range of your decimal fields
+    // consider using these annotations to enforce field validation
     @Column(name = "amount")
     private Double amount;
     @Size(max = 50)
@@ -67,9 +68,11 @@ public class OrderMaster implements Serializable {
     private Date orderDate;
     @JoinColumn(name = "delivery_person_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonbTransient
     private DeliveryPerson deliveryPersonId;
     @JoinColumn(name = "outlet_id", referencedColumnName = "id")
     @ManyToOne
+    @JsonbTransient
     private Outlets outletId;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne
