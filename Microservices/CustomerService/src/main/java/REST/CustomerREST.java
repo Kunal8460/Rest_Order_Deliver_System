@@ -161,11 +161,11 @@ public class CustomerREST {
     }
     
     @GET
-     @RolesAllowed(ROLE_CUSTOMER)
+//    @RolesAllowed(ROLE_CUSTOMER)
     @Path("/getCredits/{id}")
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public double getUserCredits(@PathParam("id")String id){
+    public double getUserCredits(@PathParam("id") String id){
         
         return ejb.getUserCredits(id);
     }

@@ -17,7 +17,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
  *
  * @author HP Laptop
  */
-@RegisterRestClient(baseUri = "http://localhost:8080/OrderingService/rest")
+@RegisterRestClient(baseUri = "http://localhost:8085/OrderingService/rest")
 @Path("/ordering")
 public interface IClientOrder {
 

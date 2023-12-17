@@ -22,12 +22,12 @@ public class DeliveryService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryPersonAllocation/{orderid}/{outletid}")
-    public String deliveryPersonAllocation(@PathParam("orderid") String orderid, @PathParam("outletid") String outletid) {
-        try {
-            return dlb.deliveryPersonAllocation(orderid, outletid);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return null;
+    public Response deliveryPersonAllocation(@PathParam("orderid") String orderid, @PathParam("outletid") String outletid) {
+        PHResponseType phr = dlb.deliveryPersonAllocation(orderid, outletid);
+        if (phr != null) {
+            return Response.status(200).entity(phr).build();
+        } else {
+            return Response.status(405).entity(phr).build();
         }
     }
 
@@ -35,8 +35,8 @@ public class DeliveryService {
     @GET
     @Path("/updateDeliveryStatusToDelivered/{orderid}")
     public Response updateDeliveryStatusToDelivered(@PathParam("orderid") String orderid) {
-         PHResponseType phr = dlb.updateDeliveryStatusToDelivered(orderid);
-        if (phr.getStatus()==200) {
+        PHResponseType phr = dlb.updateDeliveryStatusToDelivered(orderid);
+        if (phr.getStatus() == 200) {
             return Response.status(200).entity(phr).build();
         } else {
             return Response.status(405).entity(405).build();
@@ -49,4 +49,13 @@ public class DeliveryService {
     public Collection<OrderMaster> getAllocatedOrders(@PathParam("deliverPersonId") String deliverPersonId) {
         return dlb.getAllocatedOrders(deliverPersonId);
     }
+    
+    @GET
+    @Path("/getOTPForCustomer/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getOTPForCustomer(@PathParam("userId") String userId){
+        PHResponseType phr = dlb.GetOTPForCustomer(userId);
+        return Response.status(200).entity(phr).build();
+    }
+            
 }

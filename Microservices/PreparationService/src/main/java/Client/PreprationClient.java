@@ -8,6 +8,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import utilities.GenerateToken;
 
@@ -15,14 +16,14 @@ import utilities.GenerateToken;
  *
  * @author Bhatt Jaimin
  */
-@RegisterRestClient(baseUri = "http://localhost:8086/DeliveryService/rest/")
+@RegisterRestClient(baseUri = "http://localhost:8088/DeliveryService/rest/")
 @Path("/delivery")
 public interface PreprationClient {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/deliveryPersonAllocation/{orderid}/{outletid}")
-    public String deliveryPersonAllocation(@PathParam("orderid") String orderid, @PathParam("outletid") String outletid);
+    public Response deliveryPersonAllocation(@PathParam("orderid") String orderid, @PathParam("outletid") String outletid);
 
     @GET
     default String generateJWTToken() {

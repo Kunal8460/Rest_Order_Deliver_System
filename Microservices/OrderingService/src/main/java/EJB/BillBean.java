@@ -43,63 +43,6 @@ public class BillBean implements BillBeanLocal {
     @RestClient
     IClientPayment cli;
 
-//    @Override
-//    public PHResponseType addOrder(JsonObject data) {
-//        PHResponseType phr1 = new PHResponseType();
-//        try {
-//            String jsonItems = data.getJsonArray("items").toString();
-//            Gson gson = new Gson();
-//            Type listType = new TypeToken<Collection<OrderLine>>() {
-//            }.getType();
-//            Collection<OrderLine> items = gson.fromJson(jsonItems, listType);
-//
-//            Double itemTotal = 0d;
-//            OrderMaster order = new OrderMaster();
-//
-//            String uuid = Utils.getUUID();
-//
-//            order.setId(uuid);
-//
-//            order.setOrderStatus(OrderStatus.PLACED.toString());
-//
-//
-//            order.setPaymentMethod(data.getString("paymentMethod"));
-//            order.setDeliveryCharge(25d);
-//            order.setPayableAmount(itemTotal + 25);
-//            order.setOrderDate(new Date());
-//            Users user = (Users) em.createNamedQuery("Users.findById").setParameter("id", data.getString("userId")).getSingleResult();
-//            order.setUserId(user);
-//
-//            Outlets outlet = (Outlets) em.createNamedQuery("Outlets.findById").setParameter("id", data.getString("outletId")).getSingleResult();
-//            order.setOutletId(outlet);
-//
-//            for (OrderLine i : items) {
-//                i.setId(Utils.getUUID());
-//                Double tax = i.getItemId().getPrice() * i.getQuantity() * (i.getItemId().getTaxSlabId().getPercentage() / 100);
-//                itemTotal += i.getItemId().getPrice() * i.getQuantity();
-//                itemTotal += tax;
-//                i.setOrderId(order);
-//                em.persist(i);
-//            }
-//            order.setAmount(itemTotal);
-//
-//            Response response = cli.doPaymentAndPlaceOrder(order);
-//            PHResponseType phr = (PHResponseType) response.readEntity(PHResponseType.class);
-//            if (phr.getStatus() == 200) {
-//                order.setOrderLineCollection(items);
-//                em.persist(order);
-//            }
-//            //Call payment service rest by sending order id 
-////        ms.SendPaymentStatusInquiry(order.getId());
-//
-//            return phr;
-//        } catch (Exception ex) {
-//            ex.printStackTrace();
-//            phr1.setStatus(405);
-//            phr1.setMessage("Order Placing Failed");
-//            return phr1;
-//        }
-//    }
     @Override
     public PHResponseType addOrder(JsonObject data) {
         PHResponseType phr1 = new PHResponseType();
@@ -122,22 +65,23 @@ public class BillBean implements BillBeanLocal {
 
             Outlets outlet = (Outlets) em.createNamedQuery("Outlets.findById").setParameter("id", data.getString("outletId")).getSingleResult();
             order.setOutletId(outlet);
+            em.persist(order);
 
             for (int i = 0; i < jsonarr.size(); i++) {
                 OrderLine lineItem = new OrderLine();
                 JSONObject object = new JSONObject(jsonarr.getJsonObject(i).toString());
                 int quantity = object.getInt("quantity");
-                
+
                 lineItem.setId(Utils.getUUID());
                 lineItem.setQuantity(quantity);
-                Items item = em.find(Items.class,object.getString("itemId"));
+                Items item = em.find(Items.class, object.getString("itemId"));
                 lineItem.setItemId(item);
-               
+
                 Double tax = item.getPrice() * quantity * (item.getTaxSlabId().getPercentage() / 100);
                 itemTotal += item.getPrice() * quantity;
                 itemTotal += tax;
                 lineItem.setOrderId(order);
-               
+
                 em.persist(lineItem);
 
             }
@@ -145,9 +89,14 @@ public class BillBean implements BillBeanLocal {
             order.setPayableAmount(itemTotal + 25);
             Response response = cli.doPaymentAndPlaceOrder(order);
             PHResponseType phr = (PHResponseType) response.readEntity(PHResponseType.class);
-            if (phr.getStatus() == 200) {
-//                order.setOrderLineCollection(items);
-                em.persist(order);
+            if (phr.getStatus() != 200) {
+                order.setOrderStatus(OrderStatus.CANCELLED.toString());
+            } else {
+                Users updateUserCreadits = order.getUserId();
+                Double updatedCredits = updateUserCreadits.getCredits() - itemTotal;
+                updateUserCreadits.setCredits(updatedCredits);
+                em.merge(updateUserCreadits);
+                em.merge(order);
             }
             return phr;
         } catch (Exception ex) {

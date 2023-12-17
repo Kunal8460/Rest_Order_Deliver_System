@@ -18,7 +18,7 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
  *
  * @author HP Laptop
  */
-@RegisterRestClient(baseUri = "http://localhost:8080/PaymentService/rest")
+@RegisterRestClient(baseUri = "http://localhost:8086/PaymentService/rest")
 @Path("/payment")
 public interface IClientPayment {
 

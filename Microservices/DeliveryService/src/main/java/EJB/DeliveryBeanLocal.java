@@ -17,10 +17,12 @@ import utilities.PHResponseType;
 @Local
 public interface DeliveryBeanLocal {
 
-    public String deliveryPersonAllocation(String orderId, String outletid);
+    public PHResponseType deliveryPersonAllocation(String orderId, String outletid);
 
     public Collection<OrderMaster> getAllocatedOrders(String deliveryPersonId);
 
     public PHResponseType updateDeliveryStatusToDelivered(String orderId);
+    
+    public PHResponseType GetOTPForCustomer(String userId);
 
 }

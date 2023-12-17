@@ -4,10 +4,9 @@
  */
 package EJB;
 
+import client.IClientCustomer;
 import client.IClientOrder;
-import entities.OrderLine;
 import entities.OrderMaster;
-import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
@@ -29,15 +28,20 @@ public class PaymentBean implements PaymentBeanLocal {
     @RestClient
     IClientOrder cli;
 
+    @Inject
+    @RestClient
+    IClientCustomer custCli;
+
     @Override
     public PHResponseType doPaymentAndPlaceOrder(OrderMaster order) {
         PHResponseType phr = new PHResponseType();
         try {
             if (order.getPaymentMethod().equals("CREDIT")) {
 
-                if (order.getUserId().getCredits() < order.getPayableAmount()) {
+                Double userCredits = custCli.getUserCredits(order.getUserId().getId());
+                if (userCredits < order.getPayableAmount()) {
                     phr.setStatus(405);
-                    phr.setMessage("User Credits are less than the Payable amount");
+                    phr.setMessage("Payment Failed !! You don't have enough credits to Pay.");
                     return phr;
                 } else {
                     phr.setStatus(200);
@@ -50,7 +54,7 @@ public class PaymentBean implements PaymentBeanLocal {
                 return phr;
             }
         } catch (Exception ex) {
-            phr.setMessage("Payment Failed.");
+            phr.setMessage("Payment Failed due to some Exception.");
             phr.setStatus(405);
             return phr;
         }

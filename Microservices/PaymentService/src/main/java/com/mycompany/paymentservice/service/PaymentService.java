@@ -24,10 +24,10 @@ public class PaymentService {
     @Path("/doPaymentAndPlaceOrder")
     public Response doPaymentAndPlaceOrder(@RequestBody OrderMaster order) {
         PHResponseType phr = pb.doPaymentAndPlaceOrder(order);
-        if(phr.getStatus() == 200){
+//        if(phr.getStatus() == 200){
             return Response.status(200).entity(phr).build();
-        }
-            return Response.status(405,"Payment Failed").build();
+//        }
+//            return Response.status(405,"Payment Failed").build();
     }
 
 }

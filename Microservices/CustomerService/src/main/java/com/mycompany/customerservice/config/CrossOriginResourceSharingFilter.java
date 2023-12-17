@@ -20,7 +20,7 @@ public class CrossOriginResourceSharingFilter implements ContainerResponseFilter
         response.getHeaders()
                 .putSingle("Access-Control-Allow-Credentials", "true");
         response.getHeaders()
-                .putSingle("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With");
+                .putSingle("Access-Control-Allow-Headers", "Content-Type, Accept, X-Requested-With, Authorization");
     }
 
 }
