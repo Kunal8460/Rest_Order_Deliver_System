@@ -20,6 +20,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Collection;
+import java.util.List;
 import javax.inject.Inject;
 import javax.json.JsonObject;
 import javax.persistence.PersistenceContext;
@@ -450,4 +451,9 @@ public class ManagementBean implements ManagementBeanLocal {
         return em.find(DeliveryPerson.class, deliveryPersonId);
     }
 
+    @Override
+    public List<TaxSlabs> getTaxSlabs() {
+    return em.createNamedQuery("TaxSlabs.findAll").getResultList();
+    }
+    
 }

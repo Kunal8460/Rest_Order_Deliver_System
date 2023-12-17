@@ -8,7 +8,9 @@ import entities.DeliveryPerson;
 import entities.ItemCategory;
 import entities.Items;
 import entities.Outlets;
+import entities.TaxSlabs;
 import java.util.Collection;
+import java.util.List;
 import javax.ejb.Local;
 import javax.json.JsonObject;
 import utilities.PHResponseType;
@@ -59,4 +61,6 @@ public interface ManagementBeanLocal {
     public Collection<Outlets> getAllOutlets();
     
     public Outlets getOutletById(String outletId);
+    
+    public List<TaxSlabs> getTaxSlabs();
 }

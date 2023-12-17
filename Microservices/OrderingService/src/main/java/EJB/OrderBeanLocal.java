@@ -25,4 +25,7 @@ public interface OrderBeanLocal {
     public JsonObject getOutlets(int pinocode);
     public Pincodes getDistrictNameByPincode(int pincode);
     public Collection<Pincodes> getDistrictByName(String name);
+    public JsonObject getOrdersByDateAndOutlet(String outletid);
+    public JsonObject getOrdersByDeliveryPerson(String deliveryPerosnId,String status);
+    
 }

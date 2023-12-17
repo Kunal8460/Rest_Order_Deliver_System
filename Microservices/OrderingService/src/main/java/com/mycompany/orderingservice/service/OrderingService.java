@@ -88,5 +88,29 @@ public class OrderingService {
            return Response.status(405,"failed").build();
        }
     }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/getTodaysOrders/{outletid}")
+    public Response getTodaysOrders(@PathParam("outletid") String outletid) {
+        JsonObject obj = odb.getOrdersByDateAndOutlet(outletid);
+       if(obj!=null){
+           return Response.status(200).entity(obj).build();
+       }else{
+           return Response.status(405,"failed").build();
+       }
+    }
+    
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/getOrdersByDeliveryPerosn/{id}/{status}")
+    public Response getOrdersByDeliveryPerosn(@PathParam("id") String id,@PathParam("status") String status) {
+        JsonObject obj = odb.getOrdersByDeliveryPerson(id,status);
+       if(obj!=null){
+           return Response.status(200).entity(obj).build();
+       }else{
+           return Response.status(405,"failed").build();
+       }
+    }
 
 }
