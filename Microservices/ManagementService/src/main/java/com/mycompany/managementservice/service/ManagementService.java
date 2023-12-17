@@ -18,6 +18,8 @@ import entities.ItemCategory;
 import entities.Outlets;
 import EJB.ManagementBeanLocal;
 import entities.DeliveryPerson;
+import entities.TaxSlabs;
+import java.util.List;
 import utilities.PHResponseType;
 
 @Path("/management")
@@ -229,5 +231,12 @@ public class ManagementService {
     @Produces(MediaType.APPLICATION_JSON)
     public DeliveryPerson getDeliveryPersonById(@PathParam("id") String id) {
         return adminBean.getDeliveryPersonById(id);
+    }
+    
+      @GET
+    @Path("/getAllTaxSlabs")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<TaxSlabs> getAllTaxSlabs() {
+        return adminBean.getTaxSlabs();
     }
 }

@@ -91,7 +91,7 @@ public class PreprationEJB implements PreprationEJBLocal {
     @Override
     public JsonObject getOrderStatusByCustomer(String customerid) {
     try{
-            List<OrderMaster> orders= (List<OrderMaster>) em.createQuery("SELECT o FROM OrderMaster o Where o.userId.id =:id and o.orderStatus !=:status").setParameter("id", customerid).setParameter("status", Enums.OrderStatus.DELIVERED.toString()).getResultList();
+            List<OrderMaster> orders= (List<OrderMaster>) em.createQuery("SELECT o FROM OrderMaster o Where o.userId.id =:id and o.orderStatus !=:status").setParameter("id", customerid).setParameter("status", Enums.OrderStatus.IN_TRANSIT.toString()).getResultList();
         
       JsonArrayBuilder ordersline = Json.createArrayBuilder();
       JsonArrayBuilder outletOrders = Json.createArrayBuilder();
