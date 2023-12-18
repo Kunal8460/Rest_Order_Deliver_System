@@ -6,9 +6,7 @@ package EJB;
 
 import entities.Items;
 import entities.OrderMaster;
-import entities.Outlets;
 import entities.Pincodes;
-import entities.Users;
 import java.util.Collection;
 import javax.ejb.Local;
 import javax.json.JsonObject;

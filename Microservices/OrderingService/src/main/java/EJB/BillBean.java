@@ -10,6 +10,7 @@ import entities.OrderLine;
 import entities.OrderMaster;
 import entities.Outlets;
 import entities.Users;
+import java.text.DecimalFormat;
 import utilities.Enums.OrderStatus;
 import utilities.Utils;
 import java.util.Date;
@@ -49,7 +50,7 @@ public class BillBean implements BillBeanLocal {
         System.out.println(data);
         try {
             JsonArray jsonarr = data.getJsonArray("items");
-            Double itemTotal = 0d;
+            double itemTotal = 0.00;
             OrderMaster order = new OrderMaster();
 
             order.setId(Utils.getUUID());
@@ -66,27 +67,33 @@ public class BillBean implements BillBeanLocal {
             Outlets outlet = (Outlets) em.createNamedQuery("Outlets.findById").setParameter("id", data.getString("outletId")).getSingleResult();
             order.setOutletId(outlet);
             em.persist(order);
+            
+//            DecimalFormat decfor = new DecimalFormat("0.00");
 
             for (int i = 0; i < jsonarr.size(); i++) {
                 OrderLine lineItem = new OrderLine();
                 JSONObject object = new JSONObject(jsonarr.getJsonObject(i).toString());
-                int quantity = object.getInt("quantity");
-
+                int quantity = object.getInt("quantity");                
+                
                 lineItem.setId(Utils.getUUID());
                 lineItem.setQuantity(quantity);
                 Items item = em.find(Items.class, object.getString("itemId"));
                 lineItem.setItemId(item);
-
-                Double tax = item.getPrice() * quantity * (item.getTaxSlabId().getPercentage() / 100);
-                itemTotal += item.getPrice() * quantity;
-                itemTotal += tax;
+//                double tax = Math.round(item.getTaxSlabId().getPercentage() / 100);
+//                Double taxVal = Double.valueOf(String.format(".2f", tax));
+//                itemTotal += quantity * (item.getPrice() + item.getPrice() * taxVal);
+                
+//                Double tax = item.getPrice() * q * (item.getTaxSlabId().getPercentage() / 100);
+//                itemTotal += item.getPrice() * q;
+//                itemTotal += tax;
                 lineItem.setOrderId(order);
 
                 em.persist(lineItem);
 
             }
-            order.setAmount(itemTotal);
-            order.setPayableAmount(itemTotal + 25);
+            itemTotal = Double.parseDouble(data.getString("amount"));
+            order.setAmount(itemTotal - 25);
+            order.setPayableAmount(itemTotal);
             Response response = cli.doPaymentAndPlaceOrder(order);
             PHResponseType phr = (PHResponseType) response.readEntity(PHResponseType.class);
             if (phr.getStatus() != 200) {

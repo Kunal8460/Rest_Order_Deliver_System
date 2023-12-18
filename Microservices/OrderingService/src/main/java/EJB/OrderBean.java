@@ -4,6 +4,7 @@
  */
 package EJB;
 
+import entities.AddressMaster;
 import entities.Items;
 import entities.OrderLine;
 import entities.OrderMaster;
@@ -20,6 +21,7 @@ import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import utilities.Enums.OrderStatus;
 
 /**
  *
@@ -89,26 +91,103 @@ public class OrderBean implements OrderBeanLocal {
 
     }
 
+//    @Override
+//    public JsonObject getOrdersByDateAndOutlet(String outletid) {
+//        try {
+//            List<OrderMaster> todaysOrder = (List<OrderMaster>) em.createQuery("SELECT o FROM OrderMaster o WHERE o.outletId.id =:outletid AND o.orderDate = :orderDate").setParameter("outletid", outletid).setParameter("orderDate", new Date()).getResultList();
+//            JsonArrayBuilder ordersline = Json.createArrayBuilder();
+//            JsonArrayBuilder outletOrders = Json.createArrayBuilder();
+//            for (OrderMaster item : todaysOrder) {
+//                List<OrderLine> items = em.createQuery("SELECT o FROM OrderLine o WHERE o.orderId.id = :orderid").setParameter("orderid", item.getId()).getResultList();
+//                for (OrderLine e : items) {
+//                    ordersline.add(Json.createObjectBuilder()
+//                            .add("name", e.getItemId().getName())
+//                            .add("quantity", e.getQuantity())
+//                            .build());
+//                }
+//
+//                outletOrders.add(Json.createObjectBuilder()
+//                        .add("id", item.getId())
+//                        .add("name", item.getUserId().getName())
+//                        .add("totalAmount", item.getPayableAmount())
+//                        .add("status", item.getOrderStatus())
+//                        .add("items", ordersline)
+//                        .build()
+//                );
+//
+//            }
+//            JsonObject obj = Json.createObjectBuilder()
+//                    .add("orders", outletOrders)
+//                    .build();
+//            return obj;
+//
+//        } catch (Exception ex) {
+//            ex.printStackTrace();
+//            return null;
+//        }
+//
+//    }
+//
+//    @Override
+//    public JsonObject getOrdersByDeliveryPerson(String deliveryPerosnId, String status) {
+//        try{
+//               List<OrderMaster> todaysOrder = (List<OrderMaster>) em.createQuery("SELECT o FROM OrderMaster o WHERE o.deliveryPersonId.id =:id AND o.orderStatus = :status").setParameter("id", deliveryPerosnId).setParameter("status", status).getResultList();
+//            JsonArrayBuilder ordersline = Json.createArrayBuilder();
+//            JsonArrayBuilder outletOrders = Json.createArrayBuilder();
+//            for (OrderMaster item : todaysOrder) {
+//                List<OrderLine> items = em.createQuery("SELECT o FROM OrderLine o WHERE o.orderId.id = :orderid").setParameter("orderid", item.getId()).getResultList();
+//                for (OrderLine e : items) {
+//                    ordersline.add(Json.createObjectBuilder()
+//                            .add("name", e.getItemId().getName())
+//                            .add("quantity", e.getQuantity())
+//                            .build());
+//                }
+//
+//                outletOrders.add(Json.createObjectBuilder()
+//                        .add("id", item.getId())
+//                        .add("name", item.getUserId().getName())
+//                        .add("totalAmount", item.getPayableAmount())
+//                        .add("status", item.getOrderStatus())
+//                        .add("items", ordersline)
+//                        .build()
+//                );
+//
+//            }
+//            JsonObject obj = Json.createObjectBuilder()
+//                    .add("orders", outletOrders)
+//                    .build();
+//            return obj;
+//
+//        }catch(Exception ex){
+//            ex.printStackTrace();
+//            return null;
+//        }
+//    }
+    
     @Override
     public JsonObject getOrdersByDateAndOutlet(String outletid) {
         try {
-            List<OrderMaster> todaysOrder = (List<OrderMaster>) em.createQuery("SELECT o FROM OrderMaster o WHERE o.outletId.id =:outletid AND o.orderDate = :orderDate").setParameter("outletid", outletid).setParameter("orderDate", new Date()).getResultList();
+            List<OrderMaster> todaysOrder = (List<OrderMaster>) em.createQuery("SELECT o FROM OrderMaster o WHERE o.outletId.id =:outletid AND o.orderDate = :orderDate AND o.orderStatus!= :status").setParameter("outletid", outletid).setParameter("orderDate", new Date()).setParameter("status",OrderStatus.PLACED.toString()).getResultList();
             JsonArrayBuilder ordersline = Json.createArrayBuilder();
+            
             JsonArrayBuilder outletOrders = Json.createArrayBuilder();
             for (OrderMaster item : todaysOrder) {
+                
                 List<OrderLine> items = em.createQuery("SELECT o FROM OrderLine o WHERE o.orderId.id = :orderid").setParameter("orderid", item.getId()).getResultList();
+              
                 for (OrderLine e : items) {
                     ordersline.add(Json.createObjectBuilder()
                             .add("name", e.getItemId().getName())
                             .add("quantity", e.getQuantity())
                             .build());
                 }
-
+                
                 outletOrders.add(Json.createObjectBuilder()
                         .add("id", item.getId())
                         .add("name", item.getUserId().getName())
                         .add("totalAmount", item.getPayableAmount())
                         .add("status", item.getOrderStatus())
+                        .add("deliveryPerson", item.getDeliveryPersonId().getUsername().getName())
                         .add("items", ordersline)
                         .build()
                 );
@@ -128,11 +207,18 @@ public class OrderBean implements OrderBeanLocal {
 
     @Override
     public JsonObject getOrdersByDeliveryPerson(String deliveryPerosnId, String status) {
+        String useraddress=null;
         try{
+            
                List<OrderMaster> todaysOrder = (List<OrderMaster>) em.createQuery("SELECT o FROM OrderMaster o WHERE o.deliveryPersonId.id =:id AND o.orderStatus = :status").setParameter("id", deliveryPerosnId).setParameter("status", status).getResultList();
             JsonArrayBuilder ordersline = Json.createArrayBuilder();
             JsonArrayBuilder outletOrders = Json.createArrayBuilder();
             for (OrderMaster item : todaysOrder) {
+                  List<AddressMaster> address = (List<AddressMaster>) item.getUserId().getAddressMasterCollection();
+                        JsonArrayBuilder addresses = Json.createArrayBuilder(); // Empty array for "Address"
+            
+                useraddress=address.get(0).getAdderss()+","+address.get(0).getPincode().getDistrict()+","+address.get(0).getPincode().getState()+"-"+address.get(0).getPincode().getPincode();
+            
                 List<OrderLine> items = em.createQuery("SELECT o FROM OrderLine o WHERE o.orderId.id = :orderid").setParameter("orderid", item.getId()).getResultList();
                 for (OrderLine e : items) {
                     ordersline.add(Json.createObjectBuilder()
@@ -143,10 +229,13 @@ public class OrderBean implements OrderBeanLocal {
 
                 outletOrders.add(Json.createObjectBuilder()
                         .add("id", item.getId())
+                        .add("userid" ,item.getUserId().getId())
                         .add("name", item.getUserId().getName())
-                        .add("totalAmount", item.getPayableAmount())
-                        .add("status", item.getOrderStatus())
+                        .add("payable_amount", item.getPayableAmount())
+                        .add("phoneNo",item.getUserId().getPhoneNo())
+                        .add("address",useraddress)
                         .add("items", ordersline)
+                        .add("order_status", item.getOrderStatus())
                         .build()
                 );
 
