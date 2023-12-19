@@ -27,6 +27,7 @@ import javax.validation.constraints.Size;
 @Table(name = "address_master")
 @NamedQueries({
     @NamedQuery(name = "AddressMaster.findAll", query = "SELECT a FROM AddressMaster a"),
+    @NamedQuery(name="AddressMaster.findByUsername",query = "SELECT a FROM AddressMaster a WHERE a.userId.username = :username"),
     @NamedQuery(name = "AddressMaster.findById", query = "SELECT a FROM AddressMaster a WHERE a.id = :id")})
 public class AddressMaster implements Serializable {
 

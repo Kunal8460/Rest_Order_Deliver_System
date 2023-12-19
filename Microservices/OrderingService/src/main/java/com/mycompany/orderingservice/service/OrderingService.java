@@ -4,10 +4,10 @@ import EJB.BillBeanLocal;
 import EJB.OrderBeanLocal;
 import entities.Items;
 import entities.OrderMaster;
-import entities.Outlets;
 import entities.Pincodes;
 import java.util.Collection;
 import javax.ejb.EJB;
+import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -18,7 +18,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
-import org.json.JSONObject;
+import org.json.JSONArray;
 import utilities.PHResponseType;
 
 @Path("/ordering")
@@ -46,9 +46,9 @@ public class OrderingService {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("/getOrderHistory/{username}/{status}")
-    public Collection<OrderMaster> getOrderHistory(@PathParam("username") String username, @PathParam("username") String status) {
-        return odb.getOrderHistory(username, status);
+    @Path("/getOrderHistory/{userId}/{status}")
+    public String getOrderHistory(@PathParam("userId") String userId,@PathParam("status") String status) {
+        return odb.getOrderHistory(userId,status);
     }
 
     @GET

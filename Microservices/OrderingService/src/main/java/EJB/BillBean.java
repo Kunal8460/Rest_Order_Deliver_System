@@ -67,14 +67,13 @@ public class BillBean implements BillBeanLocal {
             Outlets outlet = (Outlets) em.createNamedQuery("Outlets.findById").setParameter("id", data.getString("outletId")).getSingleResult();
             order.setOutletId(outlet);
             em.persist(order);
-            
-//            DecimalFormat decfor = new DecimalFormat("0.00");
 
+//            DecimalFormat decfor = new DecimalFormat("0.00");
             for (int i = 0; i < jsonarr.size(); i++) {
                 OrderLine lineItem = new OrderLine();
                 JSONObject object = new JSONObject(jsonarr.getJsonObject(i).toString());
-                int quantity = object.getInt("quantity");                
-                
+                int quantity = object.getInt("quantity");
+
                 lineItem.setId(Utils.getUUID());
                 lineItem.setQuantity(quantity);
                 Items item = em.find(Items.class, object.getString("itemId"));
@@ -82,7 +81,7 @@ public class BillBean implements BillBeanLocal {
 //                double tax = Math.round(item.getTaxSlabId().getPercentage() / 100);
 //                Double taxVal = Double.valueOf(String.format(".2f", tax));
 //                itemTotal += quantity * (item.getPrice() + item.getPrice() * taxVal);
-                
+
 //                Double tax = item.getPrice() * q * (item.getTaxSlabId().getPercentage() / 100);
 //                itemTotal += item.getPrice() * q;
 //                itemTotal += tax;
@@ -96,12 +95,14 @@ public class BillBean implements BillBeanLocal {
             order.setPayableAmount(itemTotal);
             Response response = cli.doPaymentAndPlaceOrder(order);
             PHResponseType phr = (PHResponseType) response.readEntity(PHResponseType.class);
+            Double updatedCredits = 0d;
             if (phr.getStatus() != 200) {
                 order.setOrderStatus(OrderStatus.CANCELLED.toString());
             } else {
                 Users updateUserCreadits = order.getUserId();
-                Double updatedCredits = updateUserCreadits.getCredits() - itemTotal;
+                updatedCredits += updateUserCreadits.getCredits() - itemTotal;
                 updateUserCreadits.setCredits(updatedCredits);
+                phr.setMessage(updatedCredits.toString());
                 em.merge(updateUserCreadits);
                 em.merge(order);
             }

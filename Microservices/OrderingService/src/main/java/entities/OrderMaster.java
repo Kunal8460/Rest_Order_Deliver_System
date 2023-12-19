@@ -38,7 +38,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "OrderMaster.findByDeliveryCharge", query = "SELECT o FROM OrderMaster o WHERE o.deliveryCharge = :deliveryCharge"),
     @NamedQuery(name = "OrderMaster.findByPayableAmount", query = "SELECT o FROM OrderMaster o WHERE o.payableAmount = :payableAmount"),
     @NamedQuery(name = "OrderMaster.findByOrderDate", query = "SELECT o FROM OrderMaster o WHERE o.orderDate = :orderDate"),
-    @NamedQuery(name = "OrderMaster.findByCustomerId", query = "SELECT o FROM OrderMaster o WHERE o.userId = :userid AND o.orderStatus=:status ORDER BY o.orderDate DESC ")
+    @NamedQuery(name = "OrderMaster.findByCustomerId", query = "SELECT o FROM OrderMaster o WHERE o.userId.id = :userid AND o.orderStatus=:status ORDER BY o.orderDate DESC ")
 })
 public class OrderMaster implements Serializable {
 
