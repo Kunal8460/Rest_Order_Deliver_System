@@ -43,51 +43,57 @@ public class OrderBean implements OrderBeanLocal {
         return items;
     }
 
-    @Override
     public String getOrderHistory(String userId, String status) {
 //        Users user = (Users) em.find(Users.class,userId);
         JSONArray orderHistory = new JSONArray();
         try {
             Collection<OrderMaster> orders = em.createNamedQuery("OrderMaster.findByCustomerId").setParameter("userid", userId).setParameter("status", status).getResultList();
+            if (orders.size() > 0) {
+                for (OrderMaster order : orders) {
+                    em.refresh(order);
+                    Collection<OrderLine> orderLineItems = order.getOrderLineCollection();
+                    JSONArray ordersline = new JSONArray();
+                    for (OrderLine ol : orderLineItems) {
+                        em.refresh(ol);
+                        JSONObject lineItem = new JSONObject();
+                        lineItem.put("name", ol.getItemId().getName());
+                        lineItem.put("quantity", ol.getQuantity());
+                        lineItem.put("price", ol.getItemId().getPrice());
+                        lineItem.put("tax", ol.getItemId().getTaxSlabId().getPercentage());
+                        ordersline.put(lineItem);
+                    }
 
-            for (OrderMaster order : orders) {
-                Collection<OrderLine> orderLineItems = order.getOrderLineCollection();
-                JSONArray ordersline = new JSONArray();
-                for (OrderLine ol : orderLineItems) {
-                    JSONObject lineItem = new JSONObject();
-                    lineItem.put("name", ol.getItemId().getName());
-                    lineItem.put("quantity", ol.getQuantity());
-                    ordersline.put(lineItem);
+                    JSONObject outlets = new JSONObject();
+                    outlets.put("id", order.getOutletId().getId());
+                    outlets.put("address", order.getOutletId().getAddress());
+                    outlets.put("name", order.getOutletId().getName());
+                    outlets.put("phoneNo", order.getOutletId().getPhoneNo());
+                    outlets.put("pincode", order.getOutletId().getPincode().getPincode());
+
+                    JSONObject deliveryPerson = new JSONObject();
+                    if (order.getDeliveryPersonId() != null) {
+                        deliveryPerson.put("name", order.getDeliveryPersonId().getUsername().getName());
+                        deliveryPerson.put("phoneNo", order.getDeliveryPersonId().getUsername().getPhoneNo());
+                    }
+                    JSONObject orderObject = new JSONObject();
+                    orderObject.put("id", order.getId());
+                    orderObject.put("amount", order.getAmount());
+                    orderObject.put("payableAmount", order.getPayableAmount());
+                    orderObject.put("payableAmount", order.getPayableAmount());
+                    SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+
+                    orderObject.put("orderDate", format.format(order.getOrderDate()));
+                    orderObject.put("orderStatus", order.getOrderStatus());
+                    orderObject.put("paymentMethod", order.getPaymentMethod());
+                    orderObject.put("outletId", outlets);
+                    if (order.getDeliveryPersonId() != null) {
+                        orderObject.put("deliveryPersonId", deliveryPerson);
+                    }
+                    orderObject.put("items", ordersline);
+                    orderHistory.put(orderObject);
                 }
-
-                JSONObject outlets = new JSONObject();
-                outlets.put("id", order.getOutletId().getId());
-                outlets.put("address", order.getOutletId().getAddress());
-                outlets.put("name", order.getOutletId().getName());
-                outlets.put("phoneNo", order.getOutletId().getPhoneNo());
-                outlets.put("pincode", order.getOutletId().getPincode().getPincode());
-
-                JSONObject deliveryPerson = new JSONObject();
-
-                deliveryPerson.put("name", order.getDeliveryPersonId().getUsername().getName());
-                deliveryPerson.put("phoneNo", order.getDeliveryPersonId().getUsername().getPhoneNo());
-
-                JSONObject orderObject = new JSONObject();
-                orderObject.put("id", order.getId());
-                orderObject.put("amount", order.getAmount());
-                orderObject.put("payableAmount", order.getPayableAmount());
-                orderObject.put("payableAmount", order.getPayableAmount());
-                SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-                
-                orderObject.put("orderDate",format.format(order.getOrderDate()) );
-                orderObject.put("orderStatus", order.getOrderStatus());
-                orderObject.put("paymentMethod", order.getPaymentMethod());
-                orderObject.put("outletId", outlets);
-                orderObject.put("deliveryPersonId", deliveryPerson);
-                orderObject.put("items", ordersline);
-                orderHistory.put(orderObject);
             }
-                return orderHistory.toString();
+            return orderHistory.toString();
         } catch (Exception ex) {
             ex.printStackTrace();
             return new JSONArray().toString();
